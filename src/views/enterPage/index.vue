@@ -9,12 +9,14 @@
       class="container"
       :class="[{ translatePage: tsFlag }, { translatePageClose: !tsFlag }]"
     >
+      <ScreenProtection class="SP" />
       <div class="pageBox">
         <div class="enter">
           <div>
             <RouterLink to="/center/1"><span> E N T E R </span> </RouterLink>
           </div>
         </div>
+        <div class="logo"></div>
         <div class="title">
           <h2>我是 chengjiang_09</h2>
           <h3>欢 迎 来 到 我 的 <span>主 页</span> ！</h3>
@@ -52,11 +54,13 @@
 import { Close } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 import EnterFulLayout from './EnterFulLayout.vue'
+import ScreenProtection from './components/screenProtection.vue'
 export default {
   name: 'EnterPage',
   components: {
     EnterFulLayout,
-    Close
+    Close,
+    ScreenProtection
   },
   setup () {
     const tsFlag = ref(null)
@@ -77,23 +81,45 @@ export default {
   height: 100vh;
   transform: translate(-35%, 0%);
 
-  &::before {
-    z-index: 999 !important;
-    background: linear-gradient(
-      to left,
-      rgba(0, 0, 0, 0.637) 0,
-      rgba(0, 0, 0, 0.829) 50%,
-      rgba(0, 0, 0, 0.637) 100%
-    ) !important;
-  }
-  &::after {
-    z-index: 999 !important;
-    background: linear-gradient(
-      to left,
-      rgba(0, 0, 0, 0.637) 0,
-      rgba(0, 0, 0, 0.829) 50%,
-      rgba(0, 0, 0, 0.637) 100%
-    ) !important;
+  .SP {
+    &::before {
+      animation: moveBG3 1.5s linear 0s infinite;
+      z-index: 999 !important;
+      background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.637) 0,
+        rgba(0, 0, 0, 0.829) 50%,
+        rgba(0, 0, 0, 0.637) 100%
+      ) !important;
+    }
+    &::after {
+      animation: moveBG4 1.5s linear 0s infinite;
+      z-index: 999 !important;
+      background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.637) 0,
+        rgba(0, 0, 0, 0.829) 50%,
+        rgba(0, 0, 0, 0.637) 100%
+      ) !important;
+    }
+    @keyframes moveBG3 {
+      0% {
+        right: -300%;
+      }
+
+      100% {
+        right: -100%;
+      }
+    }
+    @keyframes moveBG4 {
+      0% {
+        right: -100%;
+      }
+
+      100% {
+        right: 100%;
+      }
+    }
   }
 
   .accept {
@@ -101,8 +127,12 @@ export default {
   }
 
   .enter {
-    a {
-      pointer-events: none;
+    div {
+      span {
+        &::before {
+          animation:none !important
+        }
+      }
     }
   }
 }
@@ -152,53 +182,6 @@ export default {
   width: 100%;
   height: 100vh;
   .container {
-    &::before {
-      z-index: 2;
-      content: "";
-      position: absolute;
-      top: 0;
-      width: 200%;
-      height: 100%;
-      animation: moveBG1 1.5s linear 0s infinite;
-      background: linear-gradient(
-        to left,
-        rgba(0, 0, 0, 0.349) 0,
-        rgba(0, 0, 0, 0.473) 50%,
-        rgba(0, 0, 0, 0.349) 100%
-      );
-    }
-    &::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      width: 200%;
-      height: 100%;
-      animation: moveBG2 1.5s linear 0s infinite;
-      background: linear-gradient(
-        to left,
-        rgba(0, 0, 0, 0.349) 0,
-        rgba(0, 0, 0, 0.473) 50%,
-        rgba(0, 0, 0, 0.349) 100%
-      );
-    }
-    @keyframes moveBG1 {
-      0% {
-        left: -300%;
-      }
-
-      100% {
-        left: -100%;
-      }
-    }
-    @keyframes moveBG2 {
-      0% {
-        left: -100%;
-      }
-
-      100% {
-        left: 100%;
-      }
-    }
     .enter {
       z-index: 100;
       position: absolute;
@@ -241,6 +224,18 @@ export default {
             }
           }
         }
+      }
+    }
+    .logo {
+      z-index: 100;
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      left: 0;
+      top: 0;
+      img {
+        width: 100%;
+        height: 100%;
       }
     }
     .title {
@@ -318,21 +313,25 @@ export default {
     }
   }
   .FulLayout {
+    overflow: hidden;
     position: fixed;
     width: 34%;
     height: 100%;
     right: -100%;
     top: 0;
     .Closeicon {
+      z-index: 100;
       position: relative;
       div {
         position: absolute;
-        top: 3vw;
-        right: 3vw;
+        top: 1vw;
+        right: 1vw;
         width: 3vw;
         height: 3vw;
-        color: rgb(182, 180, 180);
+        color: rgb(49, 49, 49);
         cursor: pointer;
+
+        .flicker(.7,.1);
       }
     }
   }

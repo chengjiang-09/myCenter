@@ -1,0 +1,17 @@
+.flicker(@beforeData:.6, @afterData:.2, @Time:2.5s) {
+    animation: flick @Time linear 0s infinite;
+
+    @keyframes flick {
+        0% {
+            opacity: @beforeData;
+        }
+
+        50% {
+            opacity: @afterData;
+        }
+
+        100% {
+            opacity: @beforeData;
+        }
+    }
+}

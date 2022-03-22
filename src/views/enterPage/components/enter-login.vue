@@ -4,7 +4,7 @@
  * @LastEditTime: 2022-03-19 15:54:43
 -->
 <template>
-  <div>登录</div>
+  <div></div>
 </template>
 
 <script>
