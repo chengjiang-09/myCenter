@@ -10,7 +10,12 @@
       <ScreenProtection />
     </div>
     <div class="body">
-      <DynamicATitle></DynamicATitle>
+      <div class="title">
+        <ul>
+          <li><DynamicATitle title="标题标题标题标"></DynamicATitle></li>
+          <li><DynamicATitle></DynamicATitle></li>
+        </ul>
+      </div>
       <div class="loginBtn">
         <DynamicButton :width="14">登 录</DynamicButton>
       </div>
@@ -53,6 +58,18 @@ export default {
     top: 0;
     transform: translateX(-50%);
     padding: 4vh 6vw;
+    .title {
+      position: absolute;
+      top: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      ul {
+        display: flex;
+        li {
+          margin: 0 1vh;
+        }
+      }
+    }
     .loginBtn {
       position: absolute;
       left: 50%;

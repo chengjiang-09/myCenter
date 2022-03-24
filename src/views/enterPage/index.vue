@@ -42,7 +42,7 @@
     >
       <div class="Closeicon">
         <div @click="tsFlag = false">
-          <el-icon><close /></el-icon>
+          <close />
         </div>
       </div>
       <EnterFulLayout />
@@ -130,7 +130,7 @@ export default {
     div {
       span {
         &::before {
-          animation:none !important
+          animation: none !important;
         }
       }
     }
@@ -320,7 +320,7 @@ export default {
     right: -100%;
     top: 0;
     .Closeicon {
-      z-index: 100;
+      z-index: 999;
       position: relative;
       div {
         position: absolute;
@@ -331,9 +331,18 @@ export default {
         color: rgb(49, 49, 49);
         cursor: pointer;
 
-        .flicker(.7,.1);
+        .flicker(0.7,0.1);
       }
     }
+  }
+}
+@media (max-width: 1244px) {
+  .FulLayout {
+    opacity: 0;
+    width: 0 !important;
+  }
+  .translatePage {
+    transform: translate(0%, 0%);
   }
 }
 </style>
