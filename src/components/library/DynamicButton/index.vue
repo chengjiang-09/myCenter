@@ -39,12 +39,10 @@ export default {
 
 <style scoped lang="less">
 .DynamicButton {
-    min-width: 80px;
-    min-height: 38px;
+  min-width: 80px;
+  min-height: 38px;
   transition: all 0.3s;
   cursor: pointer;
-  //   width: 20vh;
-  //   height: 5vh;
   border-top: 1px solid;
   border-bottom: 1px solid;
   border-left: .5vh solid;

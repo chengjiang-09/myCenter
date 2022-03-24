@@ -45,7 +45,7 @@
           <close />
         </div>
       </div>
-      <EnterFulLayout />
+      <router-view></router-view>
     </div>
   </div>
 </template>
@@ -53,14 +53,10 @@
 <script>
 import { Close } from '@element-plus/icons-vue'
 import { ref } from 'vue'
-import EnterFulLayout from './EnterFulLayout.vue'
-import ScreenProtection from './components/screenProtection.vue'
 export default {
   name: 'EnterPage',
   components: {
-    EnterFulLayout,
-    Close,
-    ScreenProtection
+    Close
   },
   setup () {
     const tsFlag = ref(null)

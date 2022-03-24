@@ -4,12 +4,14 @@
  * @LastEditTime: 2022-03-19 15:54:43
 -->
 <template>
-  <div></div>
+  <div>
+    登录入口
+  </div>
 </template>
 
 <script>
 export default {
-
+  name: 'EnterLogin'
 }
 </script>
 

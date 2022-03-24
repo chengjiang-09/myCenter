@@ -5,19 +5,20 @@
  */
 import { createRouter, createWebHashHistory } from 'vue-router'
 
-const CenterLogin = () => import('@/views/enterPage')
-const EnterLogin = () => import('@/views/enterPage/components/enter-login.vue')
+const EnterPage = () => import('@/views/enterPage')
+const EnterFulLayout = () => import('@/views/enterPage/EnterFulLayout.vue')
 
 const CenterLayout = () => import('@/layout')
 
 const routes = [
   {
     path: '/',
-    component: CenterLogin,
+    component: EnterPage,
     children: [
       {
         path: '',
-        component: EnterLogin
+        component: EnterFulLayout
+
       }
     ]
   }, {
