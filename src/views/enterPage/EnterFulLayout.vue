@@ -14,14 +14,14 @@
         <ul>
           <li>
             <DynamicATitle
-              title="登录"
+              title="短信登录"
               :actionStatus="actionStatus === 'login'"
               @click="actionPageFn('login')"
             ></DynamicATitle>
           </li>
           <li>
             <DynamicATitle
-              title="注册"
+              title="密码登录"
               :actionStatus="actionStatus === 'register'"
               @click="actionPageFn('register')"
             ></DynamicATitle>
@@ -30,12 +30,14 @@
       </div>
       <div class="form">
         <transition name="fada-ful" mode="out-in">
-          <EnterLogin v-if="actionStatus === 'login'" />
-          <EnterRegister v-else />
+          <EnterMobile
+            v-if="actionStatus === 'login'"
+            :vNum="vNum"
+            :secondFlag="flag"
+            @valiCodeTimer="valiTimer"
+          />
+          <EnterPassword v-else />
         </transition>
-      </div>
-      <div class="loginBtn">
-        <DynamicButton :width="14">登 录</DynamicButton>
       </div>
     </div>
   </div>
@@ -43,21 +45,32 @@
 
 <script>
 import { computed, ref } from 'vue'
-import EnterLogin from './components/enter-login.vue'
-import EnterRegister from './components/enter-register.vue'
+import EnterMobile from './components/enterMobile.vue'
+import EnterPassword from './components/enterPassword.vue'
 export default {
   name: 'EnterFulLayout',
   components: {
-    EnterLogin,
-    EnterRegister
+    EnterMobile,
+    EnterPassword
   },
   setup () {
     const componentIs = ref('EnterLogin')
     const actionPage = ref('login')
 
+    const changeFlag = ref(true)
+    const timer = ref(null)
     const actionPageFn = (name) => {
-      actionPage.value = name
+      if (changeFlag.value) {
+        actionPage.value = name
+        changeFlag.value = false
+
+        timer.value = setTimeout(() => {
+          changeFlag.value = true
+        }, 2000)
+      }
     }
+
+    clearTimeout(timer.value)
 
     const actionStatus = computed({
       get () {
@@ -66,11 +79,29 @@ export default {
       set (value) {}
     })
 
+    const flag = ref(true)
+    const vNum = ref(60)
+    const vTimer = ref(null)
+    const valiTimer = () => {
+      flag.value = false
+      vTimer.value = setInterval(() => {
+        vNum.value -= 1
+        if (vNum.value === -1) {
+          flag.value = true
+          vNum.value = 60
+          clearInterval(vTimer.value)
+        }
+      }, 1000)
+    }
+
     return {
       actionStatus,
       actionPage,
       componentIs,
-      actionPageFn
+      actionPageFn,
+      valiTimer,
+      flag,
+      vNum
     }
   }
 }
@@ -119,9 +150,9 @@ export default {
     padding: 4vh 6vw;
     .form {
       position: absolute;
-      top: 35%;
+      top: 40%;
       left: 50%;
-      bottom: 30%;
+      bottom: 15%;
       transform: translateX(-50%);
     }
     .title {
@@ -136,13 +167,6 @@ export default {
           margin: 0 1vh;
         }
       }
-    }
-    .loginBtn {
-      user-select: none;
-      position: absolute;
-      left: 50%;
-      bottom: 20%;
-      transform: translateX(-50%);
     }
   }
 }

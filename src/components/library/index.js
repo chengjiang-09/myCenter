@@ -16,7 +16,6 @@ export default {
 
       app.component(component.name, component)
     })
-
     // app.component(DynamicVidoe.name, DynamicVidoe)
     // app.component(DynamicButton.name, DynamicButton)
     // app.component(DynamicATitle.name, DynamicATitle)

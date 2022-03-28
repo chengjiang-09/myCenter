@@ -314,6 +314,7 @@ export default {
     width: 34%;
     height: 100%;
     right: -100%;
+    background-color: #fff;
     top: 0;
     .Closeicon {
       z-index: 999;
