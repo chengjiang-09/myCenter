@@ -1,7 +1,7 @@
 import Mock from 'mockjs'
 
 import { mobileCode } from './mobileCode'
-import { valiableMobileCode } from './valiableMobileCode'
+import { mobileLogin } from './mobileLogin'
 
 Mock.setup({
   timeout: '500-1000'
@@ -9,7 +9,7 @@ Mock.setup({
 
 mobileCode(Mock)
 
-valiableMobileCode(Mock)
+mobileLogin(Mock)
 
 // Mock.mock(/\/my\/test/, 'get', () => {
 //   return {

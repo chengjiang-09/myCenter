@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export const valiableMobileCode = (data) => {
+export const mobileLogin = (data) => {
   return request(
     '/mobile/valiableode',
     'post',

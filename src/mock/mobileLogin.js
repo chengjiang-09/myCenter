@@ -1,4 +1,4 @@
-export const valiableMobileCode = (Mock) => {
+export const mobileLogin = (Mock) => {
   return Mock.mock(/\/mobile\/valiableode/, 'post', (data) => {
     const responseData = JSON.parse(data.body)
     if (responseData.code === '000000' && responseData.mobile === '18286427545') {

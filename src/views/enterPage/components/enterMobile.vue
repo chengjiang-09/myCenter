@@ -18,7 +18,9 @@
 </template>
 
 <script>
-import { mobileCodeAPI, valiableMobileCodeAPI } from '@/api'
+import { mobileCodeAPI, mobileLoginAPI } from '@/api'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import { computed, reactive, ref } from 'vue'
 import { valiMobile } from './valiabel'
 export default {
@@ -39,6 +41,9 @@ export default {
       mobile: '',
       code: ''
     })
+
+    const store = useStore()
+    const router = useRouter()
 
     const getCodeMessage = ref('发送验证码')
     const warnText = ref('')
@@ -117,7 +122,7 @@ export default {
       }
     }
 
-    const login = () => {
+    const login = async () => {
       if (loginFlag.value) {
         valiBlur()
         valiCodeBlur()
@@ -125,9 +130,14 @@ export default {
           loginFlag.value = false
           codeWarnText.value = ''
 
-          valiableMobileCodeAPI(loginUser).then(value => {
-            console.log(value)
-          })
+          const { result } = await mobileLoginAPI(loginUser)
+
+          if (result.status === 1) {
+            store.commit('user/setUserInfo', result)
+            router.push(`/center/${result.id}`)
+          } else {
+            alert('手机号或验证码错误！')
+          }
         }
       }
     }

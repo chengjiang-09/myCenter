@@ -1,5 +1,5 @@
 import { mobileCode } from './mobileCode'
-import { valiableMobileCode } from './valiableMobileCode'
+import { mobileLogin } from './mobileLogin'
 
 export const mobileCodeAPI = mobileCode
-export const valiableMobileCodeAPI = valiableMobileCode
+export const mobileLoginAPI = mobileLogin
