@@ -12,7 +12,7 @@
 
       :style="{width:`${width}vw`}"
     />
-    <p class="warnText"></p>
+    <p class="warnText">{{ warnText }}</p>
   </div>
 </template>
 
@@ -31,6 +31,10 @@ export default {
     width: {
       type: Number,
       default: 20
+    },
+    warnText: {
+      type: String,
+      default: ''
     }
   },
   setup (props, { emit }) {
@@ -40,6 +44,7 @@ export default {
 
     const blurFn = (e) => {
       e.target.placeholder = props.title
+      emit('blur')
     }
 
     const focusFn = (e) => {
@@ -75,5 +80,7 @@ export default {
 .warnText {
   display: block;
   height: 2vh;
+  font-size: 1.6vh;
+  color: rgb(156, 25, 25);
 }
 </style>

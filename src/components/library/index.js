@@ -13,7 +13,6 @@ export default {
   install (app) {
     componentList.keys().forEach(key => {
       const component = componentList(key).default
-
       app.component(component.name, component)
     })
     // app.component(DynamicVidoe.name, DynamicVidoe)

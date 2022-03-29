@@ -14,4 +14,6 @@ import '@/styles/common.less'
 // 我的组件
 import myUI from '@/components/library'
 
+import './mock'
+
 createApp(App).use(store).use(router).use(myUI).mount('#app')

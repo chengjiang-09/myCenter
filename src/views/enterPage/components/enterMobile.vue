@@ -7,18 +7,20 @@
   <div class="EnterMobile">
     <h2>进入私密空间~~</h2>
     <ul>
-      <li><DynamicIText v-model:value="loginUser.mobile" title="请输入手机号"/></li>
+      <li><DynamicIText v-model:value="loginUser.mobile" title="请输入手机号" @blur="valiBlur" :warnText='warnText'/></li>
       <li :style="{display:`flex`,width:`100%`}">
-        <DynamicIText v-model:value="loginUser.password" :width="11" title="验证码"/>
+        <DynamicIText v-model:value="loginUser.code" :width="11" title="验证码" @blur="valiCodeBlur" :warnText='codeWarnText'/>
         <DynamicButton class="valiableBT" :width="9" @click="getCode">{{CodeMessage}}</DynamicButton>
       </li>
-      <li><DynamicButton class="loginBT" :width="14">确认登录</DynamicButton></li>
+      <li><DynamicButton class="loginBT" :width="14" @click="login">确认登录</DynamicButton></li>
     </ul>
   </div>
 </template>
 
 <script>
+import { mobileCodeAPI, valiableMobileCodeAPI } from '@/api'
 import { computed, reactive, ref } from 'vue'
+import { valiMobile } from './valiabel'
 export default {
   name: 'EnterMobile',
   props: {
@@ -27,20 +29,31 @@ export default {
     },
     vNum: {
       type: Number
+    },
+    sMobile: {
+      type: [Boolean, String]
     }
   },
   setup (props, { emit }) {
     const loginUser = reactive({
       mobile: '',
-      password: ''
+      code: ''
     })
 
     const getCodeMessage = ref('发送验证码')
+    const warnText = ref('')
+    const codeWarnText = ref('')
     const timer = ref(null)
     const flag = ref(true)
+    const loginFlag = ref(true)
     let CodeMessage = null
 
     if (!props.secondFlag) {
+      if (props.sMobile) {
+        loginUser.mobile = (function () {
+          return props.sMobile
+        }())
+      }
       CodeMessage = computed({
         get () {
           return props.vNum === 60 ? '发送验证码' : `${props.vNum}s`
@@ -57,26 +70,78 @@ export default {
       })
     }
 
+    const valiBlur = () => {
+      if (!valiMobile(loginUser.mobile)) {
+        warnText.value = '手机号输入错误！'
+      } else {
+        warnText.value = ''
+        loginFlag.value = true
+      }
+    }
+
+    const valiCodeBlur = () => {
+      if (loginUser.code.length === 0) {
+        codeWarnText.value = '短信验证码为空！'
+      } else {
+        codeWarnText.value = ''
+        loginFlag.value = true
+      }
+    }
+
     const getCode = (e) => {
-      if (flag.value) {
-        if (props.secondFlag) {
-          flag.value = false
-          getCodeMessage.value = 60
-          emit('valiCodeTimer')
-          timer.value = setInterval(() => {
-            getCodeMessage.value -= 1
-            if (getCodeMessage.value === -1) {
-              flag.value = true
-              getCodeMessage.value = '发送验证码'
-              clearInterval(timer.value)
-            }
-          }, 1000)
+      if (valiMobile(loginUser.mobile)) {
+        if (flag.value) {
+          if (props.secondFlag) {
+            loginFlag.value = true
+            warnText.value = ''
+            flag.value = false
+            getCodeMessage.value = 60
+
+            mobileCodeAPI().then((value) => {
+              console.log(value)
+            })
+
+            emit('valiCodeTimer', loginUser.mobile)
+            timer.value = setInterval(() => {
+              getCodeMessage.value -= 1
+              if (getCodeMessage.value === -1) {
+                flag.value = true
+                getCodeMessage.value = '发送验证码'
+                clearInterval(timer.value)
+              }
+            }, 1000)
+          }
+        }
+      } else {
+        warnText.value = '手机号输入错误！'
+      }
+    }
+
+    const login = () => {
+      if (loginFlag.value) {
+        valiBlur()
+        valiCodeBlur()
+        if (valiMobile(loginUser.mobile) && loginUser.code.length !== 0) {
+          loginFlag.value = false
+          codeWarnText.value = ''
+
+          valiableMobileCodeAPI(loginUser).then(value => {
+            console.log(value)
+          })
         }
       }
     }
 
     return {
-      loginUser, getCode, CodeMessage, flag
+      loginUser,
+      getCode,
+      CodeMessage,
+      flag,
+      warnText,
+      valiBlur,
+      login,
+      codeWarnText,
+      valiCodeBlur
     }
   }
 }

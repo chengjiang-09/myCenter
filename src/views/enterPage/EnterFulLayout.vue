@@ -34,6 +34,7 @@
             v-if="actionStatus === 'login'"
             :vNum="vNum"
             :secondFlag="flag"
+            :sMobile="sMobile"
             @valiCodeTimer="valiTimer"
           />
           <EnterPassword v-else />
@@ -82,7 +83,9 @@ export default {
     const flag = ref(true)
     const vNum = ref(60)
     const vTimer = ref(null)
-    const valiTimer = () => {
+    const sMobile = ref(null)
+    const valiTimer = (mobile) => {
+      sMobile.value = mobile
       flag.value = false
       vTimer.value = setInterval(() => {
         vNum.value -= 1
@@ -101,7 +104,8 @@ export default {
       actionPageFn,
       valiTimer,
       flag,
-      vNum
+      vNum,
+      sMobile
     }
   }
 }
