@@ -6,6 +6,7 @@
 
 import axios from 'axios'
 import router from '@/router'
+import store from '@/store'
 
 export const baseURL = ''
 
@@ -16,6 +17,11 @@ const request = axios.create({
 
 request.interceptors.request.use(config => {
   // 查询是否存在Token，修改请求头
+  const { token } = store.state.user.userInfo
+
+  if (token) {
+    config.headers.Authorization = `chengjiang ${token}`
+  }
 
   return config
 }, error => {
@@ -25,6 +31,7 @@ request.interceptors.request.use(config => {
 request.interceptors.response.use(res => res.data, error => {
   if (error.response && error.response.status === 401) {
     // 清空Token,或储存的用户信息
+    store.commit('user/setUserInfo', {})
 
     router.push('/')
   }

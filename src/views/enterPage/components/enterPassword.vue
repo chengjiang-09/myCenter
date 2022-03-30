@@ -2,17 +2,35 @@
   <div class="EnterPassword">
     <h2>前往主页~~</h2>
     <ul>
-      <li><DynamicIText v-model:value="registerUser.mobile" title="请输入手机号"/></li>
-      <li><DynamicIText v-model:value="registerUser.password" title="请输入密码"/></li>
       <li>
-        <DynamicButton class="loginBT" :width="14">确认登录</DynamicButton>
+        <DynamicIText
+          v-model:value="registerUser.mobile"
+          title="请输入手机号"
+          :warnText="warnText"
+          @blur="valiBlur"
+        />
+      </li>
+      <li>
+        <DynamicIText
+          v-model:value="registerUser.password"
+          Dytype='password'
+          title="请输入密码"
+          :warnText="warnPwText"
+          @blur="valiPasswordBlur"
+        />
+      </li>
+      <li>
+        <DynamicButton class="loginBT" :width="14" @click="passwordLogin"
+          >确认登录</DynamicButton
+        >
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import { reactive } from 'vue'
+import { valiMobile } from './valiabel'
+import { reactive, ref } from 'vue'
 export default {
   name: 'EnterPassword',
   setup () {
@@ -21,8 +39,42 @@ export default {
       password: ''
     })
 
+    let loginFlag = true
+
+    const warnText = ref('')
+    const warnPwText = ref('')
+
+    const valiBlur = () => {
+      if (!valiMobile(registerUser.mobile)) {
+        warnText.value = '请输入正确的手机号码！'
+      } else {
+        warnText.value = ''
+        loginFlag = true
+      }
+    }
+
+    const valiPasswordBlur = () => {
+      if (registerUser.password.length === 0) {
+        warnPwText.value = '密码为空！'
+      } else {
+        warnPwText.value = ''
+        loginFlag = true
+      }
+    }
+
+    const passwordLogin = () => {
+      valiBlur()
+      valiPasswordBlur()
+      if (loginFlag) {
+        if (valiMobile(registerUser.mobile) && registerUser.password.length !== 0) {
+          loginFlag = false
+          console.log('登录！')
+        }
+      }
+    }
+
     return {
-      registerUser
+      registerUser, passwordLogin, valiPasswordBlur, valiBlur, warnText, warnPwText
     }
   }
 }

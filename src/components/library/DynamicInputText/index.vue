@@ -1,9 +1,8 @@
 <template>
   <div>
     <input
-      id="DyText"
       class="DynamicIText"
-      type="text"
+      :type="Dytype"
       @blur="blurFn"
       @focus="focusFn"
       :placeholder="title"
@@ -35,6 +34,10 @@ export default {
     warnText: {
       type: String,
       default: ''
+    },
+    Dytype: {
+      type: String,
+      default: 'text'
     }
   },
   setup (props, { emit }) {

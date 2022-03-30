@@ -77,7 +77,7 @@ export default {
 
     const valiBlur = () => {
       if (!valiMobile(loginUser.mobile)) {
-        warnText.value = '手机号输入错误！'
+        warnText.value = '请输入正确的手机号码！'
       } else {
         warnText.value = ''
         loginFlag.value = true
@@ -118,7 +118,7 @@ export default {
           }
         }
       } else {
-        warnText.value = '手机号输入错误！'
+        warnText.value = '请输入正确的手机号码！'
       }
     }
 
@@ -130,13 +130,14 @@ export default {
           loginFlag.value = false
           codeWarnText.value = ''
 
-          const { result } = await mobileLoginAPI(loginUser)
+          const { result, msg } = await mobileLoginAPI(loginUser)
 
           if (result.status === 1) {
             store.commit('user/setUserInfo', result)
             router.push(`/center/${result.id}`)
           } else {
-            alert('手机号或验证码错误！')
+            loginUser.code = ''
+            alert(msg)
           }
         }
       }
