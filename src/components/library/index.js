@@ -7,7 +7,7 @@
 // import DynamicButton from '@/components/library/DynamicButton'
 // import DynamicATitle from '@/components/library/DynamicAnimationTitle'
 
-const componentList = require.context('./', true, /\.vue$/)
+const componentList = require.context('./DynamicComponents', true, /\.vue$/)
 
 export default {
   install (app) {

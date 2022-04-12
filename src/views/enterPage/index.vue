@@ -5,6 +5,7 @@
 -->
 <template>
   <div class="EnterPage">
+    <DynamicAlert />
     <div
       class="container"
       :class="[{ translatePage: tsFlag }, { translatePageClose: !tsFlag }]"
@@ -13,7 +14,7 @@
       <div class="pageBox">
         <div class="enter">
           <div>
-            <RouterLink to="/center/1"><span> E N T E R </span> </RouterLink>
+            <RouterLink to="/center"><span> E N T E R </span> </RouterLink>
           </div>
         </div>
         <div class="logo"></div>

@@ -4,7 +4,7 @@
     <ul>
       <li>
         <DynamicIText
-          v-model:value="registerUser.mobile"
+          v-model:value="loginUser.mobile"
           title="请输入手机号"
           :warnText="warnText"
           @blur="valiBlur"
@@ -12,7 +12,7 @@
       </li>
       <li>
         <DynamicIText
-          v-model:value="registerUser.password"
+          v-model:value="loginUser.password"
           Dytype='password'
           title="请输入密码"
           :warnText="warnPwText"
@@ -31,13 +31,19 @@
 <script>
 import { valiMobile } from './valiabel'
 import { reactive, ref } from 'vue'
+import { passwordLoginAPI } from '@/api'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 export default {
   name: 'EnterPassword',
   setup () {
-    const registerUser = reactive({
+    const loginUser = reactive({
       mobile: '',
       password: ''
     })
+
+    const router = useRouter()
+    const store = useStore()
 
     let loginFlag = true
 
@@ -45,7 +51,7 @@ export default {
     const warnPwText = ref('')
 
     const valiBlur = () => {
-      if (!valiMobile(registerUser.mobile)) {
+      if (!valiMobile(loginUser.mobile)) {
         warnText.value = '请输入正确的手机号码！'
       } else {
         warnText.value = ''
@@ -54,7 +60,7 @@ export default {
     }
 
     const valiPasswordBlur = () => {
-      if (registerUser.password.length === 0) {
+      if (loginUser.password.length === 0) {
         warnPwText.value = '密码为空！'
       } else {
         warnPwText.value = ''
@@ -62,19 +68,27 @@ export default {
       }
     }
 
-    const passwordLogin = () => {
+    const passwordLogin = async () => {
       valiBlur()
       valiPasswordBlur()
       if (loginFlag) {
-        if (valiMobile(registerUser.mobile) && registerUser.password.length !== 0) {
+        if (valiMobile(loginUser.mobile) && loginUser.password.length !== 0) {
           loginFlag = false
-          console.log('登录！')
+          const { result, msg } = await passwordLoginAPI(loginUser)
+
+          if (result.status === 1) {
+            store.commit('user/setUserInfo', result)
+            router.push('/center')
+          } else {
+            loginUser.code = ''
+            alert(msg)
+          }
         }
       }
     }
 
     return {
-      registerUser, passwordLogin, valiPasswordBlur, valiBlur, warnText, warnPwText
+      loginUser, passwordLogin, valiPasswordBlur, valiBlur, warnText, warnPwText
     }
   }
 }

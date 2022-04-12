@@ -1,7 +1,7 @@
-export const mobileLogin = (Mock) => {
-  return Mock.mock(/\/mobile\/login/, 'post', (data) => {
+export const passwordLogin = (Mock) => {
+  return Mock.mock(/\/login/, 'post', (data) => {
     const responseData = JSON.parse(data.body)
-    if (responseData.code === '000000' && responseData.mobile === '18286427545') {
+    if (responseData.password === '000000' && responseData.mobile === '18286427545') {
       return {
         msg: '登录成功',
         result: {
@@ -14,7 +14,7 @@ export const mobileLogin = (Mock) => {
       }
     } else {
       return {
-        msg: '手机号或短信验证码错误！',
+        msg: '手机号或密码错误！',
         result: {
           status: 0
         }

@@ -134,7 +134,7 @@ export default {
 
           if (result.status === 1) {
             store.commit('user/setUserInfo', result)
-            router.push(`/center/${result.id}`)
+            router.push('/center')
           } else {
             loginUser.code = ''
             alert(msg)

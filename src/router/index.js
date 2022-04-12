@@ -22,7 +22,7 @@ const routes = [
       }
     ]
   }, {
-    path: '/center/:id',
+    path: '/center',
     component: CenterLayout,
     children: []
   }
