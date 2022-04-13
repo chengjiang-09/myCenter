@@ -1,30 +1,41 @@
 <template>
-  <div class="DynamicAlert">
-    <div class="container">
-      <div class="top">
-        <span :style="{ fontSize: `${titleSize}px` }">{{ title }}</span>
-        <span
-          class="close"
-          :style="{ display: 'block', width: `${titleSize}px` }"
-        >
-          <Close />
-        </span>
-      </div>
-      <div class="alertBody">
-        <p>
-          1231241DASEQWEQWAQ
-        </p>
+  <transition name="fade-alert" mode="out-in" appear>
+    <div class="DynamicAlert" v-if="clear">
+      <div class="container">
+        <div class="top">
+          <span :style="{ fontSize: `${titleSize}px` }">{{ title }}</span>
+          <span
+            class="close"
+            :style="{ display: 'block', width: `${titleSize}px` }"
+            @click="clear = false"
+          >
+            <Close />
+          </span>
+        </div>
+        <div class="alertBody">
+          <p>
+            {{ context }}
+          </p>
+        </div>
+        <div class="btn">
+          <DynamicButton :width="8" @click="clear = false">
+            确定
+          </DynamicButton>
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
 import { Close } from '@element-plus/icons-vue'
+import DynamicButton from '@/components/library/DynamicComponents/DynamicButton'
+import { onMounted, ref } from 'vue'
 export default {
   name: 'DynamicAlert',
   components: {
-    Close
+    Close,
+    DynamicButton
   },
   props: {
     title: {
@@ -34,12 +45,42 @@ export default {
     titleSize: {
       type: Number,
       default: 24
+    },
+    context: {
+      type: String,
+      default: '警告！'
+    }
+  },
+  setup () {
+    const clear = ref(false)
+
+    onMounted(() => {
+      clear.value = true
+    })
+
+    return {
+      clear
     }
   }
 }
 </script>
 
 <style scoped lang="less">
+.fade-alert-enter-from,
+.fade-alert-leave-to {
+  opacity: 0!important;
+}
+
+.fade-alert-enter-active,
+.fade-alert-leave-active {
+  transition: opacity .6s;
+}
+
+.fade-alert-enter-to,
+.fade-alert-leave-from {
+  opacity: 0.9!important;
+}
+
 @baseColor: #666666;
 .DynamicAlert {
   position: fixed;
@@ -56,6 +97,7 @@ export default {
   .container {
     width: 100%;
     height: 100%;
+    position: relative;
     .top {
       display: flex;
       justify-content: space-between;
@@ -88,6 +130,18 @@ export default {
         word-break: break-all;
       }
     }
+
+    .btn {
+      position: absolute;
+      right: 1vw;
+      bottom: 1vh;
+    }
+  }
+}
+
+@media (max-width: 1024px), (max-height: 600px) {
+  .DynamicAlert {
+    display: none !important;
   }
 }
 </style>

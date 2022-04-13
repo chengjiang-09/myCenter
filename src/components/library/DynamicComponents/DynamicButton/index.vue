@@ -27,7 +27,7 @@ export default {
     },
     borderColor: {
       type: String,
-      default: '#666666'
+      default: '#888888'
     },
     fontSize: {
       type: Number,
@@ -39,8 +39,6 @@ export default {
 
 <style scoped lang="less">
 .DynamicButton {
-  min-width: 80px;
-  min-height: 38px;
   transition: all 0.3s;
   cursor: pointer;
   border-top: 1px solid;
@@ -48,10 +46,8 @@ export default {
   border-left: .5vh solid;
   border-right: .5vh solid;
   border-radius: 2.5vh;
-  opacity: 0.6;
 
   &:hover {
-    opacity: 1;
     border-left: 1.5vh solid;
     border-right: 1.5vh solid;
   }

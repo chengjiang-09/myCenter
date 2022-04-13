@@ -5,7 +5,6 @@
 -->
 <template>
   <div class="EnterPage">
-    <DynamicAlert />
     <div
       class="container"
       :class="[{ translatePage: tsFlag }, { translatePageClose: !tsFlag }]"

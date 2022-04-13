@@ -34,6 +34,8 @@ import { reactive, ref } from 'vue'
 import { passwordLoginAPI } from '@/api'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+
+import DyAlert from '@/components/library/DynamicComponents/DynamicAlert'
 export default {
   name: 'EnterPassword',
   setup () {
@@ -81,7 +83,7 @@ export default {
             router.push('/center')
           } else {
             loginUser.code = ''
-            alert(msg)
+            DyAlert({ title: '警告！', context: msg })
           }
         }
       }

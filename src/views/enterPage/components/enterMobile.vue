@@ -23,6 +23,8 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { computed, reactive, ref } from 'vue'
 import { valiMobile } from './valiabel'
+
+import DyAlert from '@/components/library/DynamicComponents/DynamicAlert'
 export default {
   name: 'EnterMobile',
   props: {
@@ -137,7 +139,7 @@ export default {
             router.push('/center')
           } else {
             loginUser.code = ''
-            alert(msg)
+            DyAlert({ title: '警告！', context: msg })
           }
         }
       }
