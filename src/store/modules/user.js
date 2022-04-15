@@ -16,7 +16,9 @@ const mutations = {
 }
 
 const actions = {
+  getUserInfoToToken (context) {
 
+  }
 }
 
 const getters = {

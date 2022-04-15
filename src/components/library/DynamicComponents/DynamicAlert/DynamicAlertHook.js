@@ -1,5 +1,5 @@
 import { createVNode, render } from 'vue'
-import DynamicAlert from './DynamicAlert.vue'
+import DynamicAlert from './index.vue'
 
 const vessel = document.createElement('div')
 vessel.setAttribute('class', 'DyAlert')

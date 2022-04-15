@@ -24,7 +24,7 @@ import { useRouter } from 'vue-router'
 import { computed, reactive, ref } from 'vue'
 import { valiMobile } from './valiabel'
 
-import DyAlert from '@/components/library/DynamicComponents/DynamicAlert'
+import DyAlert from '@/components/library/DynamicComponents/DynamicAlert/DynamicAlertHook'
 export default {
   name: 'EnterMobile',
   props: {

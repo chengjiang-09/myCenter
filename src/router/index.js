@@ -4,6 +4,7 @@
  * @LastEditTime: 2022-03-19 16:00:59
  */
 import { createRouter, createWebHashHistory } from 'vue-router'
+import store from '@/store'
 
 const EnterPage = () => import('@/views/enterPage')
 const EnterFulLayout = () => import('@/views/enterPage/EnterFulLayout.vue')
@@ -31,6 +32,29 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+})
+
+const TokenHasList = ['/center']
+
+router.beforeEach((to, from) => {
+  const { token } = store.state.user.userInfo
+  if (token) {
+    if (to.path === '/') {
+      return {
+        path: '/center'
+      }
+    } else {
+      return true
+    }
+  } else {
+    if (TokenHasList.indexOf(to.path) > -1) {
+      return {
+        path: `/?redirectURL=${to.fullPath}`
+      }
+    } else {
+      return true
+    }
+  }
 })
 
 export default router

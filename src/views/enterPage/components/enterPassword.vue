@@ -35,7 +35,7 @@ import { passwordLoginAPI } from '@/api'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 
-import DyAlert from '@/components/library/DynamicComponents/DynamicAlert'
+import DyAlert from '@/components/library/DynamicComponents/DynamicAlert/DynamicAlertHook'
 export default {
   name: 'EnterPassword',
   setup () {
