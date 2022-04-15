@@ -4,6 +4,7 @@
  * @LastEditTime: 2022-03-19 16:00:59
  */
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { tokenCookie } from '@/utils/auth'
 import store from '@/store'
 
 const EnterPage = () => import('@/views/enterPage')
@@ -34,10 +35,18 @@ const router = createRouter({
   routes
 })
 
-const TokenHasList = ['/center']
+const TokenHasList = []
 
-router.beforeEach((to, from) => {
-  const { token } = store.state.user.userInfo
+router.beforeEach(async (to, from) => {
+  let token = tokenCookie.getToken()
+  const id = store.state.user.userInfo.id
+  if (token) {
+    if (!id) {
+      await store.dispatch('user/getUserInfoToToken', token)
+      token = tokenCookie.getToken()
+    }
+  }
+
   if (token) {
     if (to.path === '/') {
       return {

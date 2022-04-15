@@ -7,6 +7,7 @@
 import axios from 'axios'
 import router from '@/router'
 import store from '@/store'
+import { tokenCookie, tokenTimeOutCookie } from '@/utils/auth'
 
 export const baseURL = ''
 
@@ -17,7 +18,7 @@ const request = axios.create({
 
 request.interceptors.request.use(config => {
   // 查询是否存在Token，修改请求头
-  const { token } = store.state.user.userInfo
+  const token = tokenCookie.getToken()
 
   if (token) {
     config.headers.Authorization = `chengjiang ${token}`
@@ -28,10 +29,22 @@ request.interceptors.request.use(config => {
   return Promise.reject(error)
 })
 
-request.interceptors.response.use(res => res.data, error => {
+request.interceptors.response.use(res => {
+  if (res.status === 401) {
+    // 401 Token过期
+    store.commit('user/setUserInfo', {})
+    tokenCookie.removeToken()
+    tokenTimeOutCookie.removeTimeOutStamp()
+
+    return router.push('/')
+  }
+  return res.data
+}, error => {
   if (error.response && error.response.status === 401) {
     // 清空Token,或储存的用户信息
     store.commit('user/setUserInfo', {})
+    tokenCookie.removeToken()
+    tokenTimeOutCookie.removeTimeOutStamp()
 
     router.push('/')
   }

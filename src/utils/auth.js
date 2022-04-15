@@ -1,41 +1,30 @@
 import Cookies from 'js-cookie'
 
+const tokenKey = 'vue_personCenter_token'
+const tokenTimeOutKey = 'vue_personCenter_timeStamp'
+
 // token操作对象
-const token = {
-  _Key: 'vue_personCenter_token',
+export const tokenCookie = {
   getToken: () => {
-    return Cookies.get(this._Key)
+    return Cookies.get(tokenKey)
   },
   setToken (token) {
-    return Cookies.set(this._Key, token)
+    return Cookies.set(tokenKey, token)
+  },
+  removeToken () {
+    return Cookies.remove(tokenKey)
   }
 }
 
 // token过期时间操作对象
-const tokenTimeOut = {
-  _Key: 'vue_personCenter_timeStamp',
+export const tokenTimeOutCookie = {
   getTimeOutStamp: () => {
-    return Cookies.get(this._Key)
+    return Cookies.get(tokenTimeOutKey)
   },
   setTimeOutStamp: () => {
-    return Cookies.set(this._Key, Date.now())
+    return Cookies.set(tokenTimeOutKey, Date.now())
+  },
+  removeTimeOutStamp: () => {
+    return Cookies.remove(tokenTimeOutKey)
   }
 }
-
-// Proxy实现数据私有和不可修改
-function privateConversion (obj) {
-  return new Proxy(obj, {
-    get: function (target, key) {
-      if (key[0] === '_') {
-        return undefined
-      }
-      return target[key]
-    },
-    set: function (target, key, value) {
-      throw new Error('当前属性不可修改！')
-    }
-  })
-}
-
-export const tokenCookie = privateConversion(token)
-export const tokenTimeOutCookie = privateConversion(tokenTimeOut)

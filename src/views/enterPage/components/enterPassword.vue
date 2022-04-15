@@ -31,7 +31,6 @@
 <script>
 import { valiMobile } from './valiabel'
 import { reactive, ref } from 'vue'
-import { passwordLoginAPI } from '@/api'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 
@@ -76,13 +75,14 @@ export default {
       if (loginFlag) {
         if (valiMobile(loginUser.mobile) && loginUser.password.length !== 0) {
           loginFlag = false
-          const { result, msg } = await passwordLoginAPI(loginUser)
+
+          const msg = await store.dispatch('user/passwordLogin', loginUser)
+          const result = store.state.user.userInfo
 
           if (result.status === 1) {
-            store.commit('user/setUserInfo', result)
             router.push('/center')
           } else {
-            loginUser.code = ''
+            loginUser.password = ''
             DyAlert({ title: '警告！', context: msg })
           }
         }
