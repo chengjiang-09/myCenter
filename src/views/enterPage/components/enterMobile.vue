@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { mobileCodeAPI, mobileLoginAPI } from '@/api'
+import { mobileCodeAPI } from '@/api'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { computed, reactive, ref } from 'vue'
@@ -132,10 +132,10 @@ export default {
           loginFlag.value = false
           codeWarnText.value = ''
 
-          const { result, msg } = await mobileLoginAPI(loginUser)
+          const msg = await store.dispatch('user/mobileLogin', loginUser)
+          const result = store.state.user.userInfo
 
           if (result.status === 1) {
-            store.commit('user/setUserInfo', result)
             router.push('/center')
           } else {
             loginUser.code = ''

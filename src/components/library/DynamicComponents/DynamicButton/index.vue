@@ -39,7 +39,9 @@ export default {
 
 <style scoped lang="less">
 .DynamicButton {
-  transition: all 0.3s;
+  transition: border 0.3s;
+  color: #666666;
+  font-weight:600;
   cursor: pointer;
   border-top: 1px solid;
   border-bottom: 1px solid;

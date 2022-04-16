@@ -139,6 +139,21 @@ export default {
     background: url("~@/assets/images/bian.png") no-repeat;
     background-size: 100% 100%;
     opacity: 0.1;
+    animation: bgmove 3s linear 0s infinite;
+
+    @keyframes bgmove {
+      0% {
+        opacity:0.1;
+      }
+
+      50% {
+        opacity:0.2;
+      }
+
+      0%{
+        opacity:0.1;
+      }
+    }
   }
   .enterFulSP {
     opacity: 0.2;

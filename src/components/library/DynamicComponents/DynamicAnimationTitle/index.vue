@@ -139,6 +139,7 @@ export default {
   span {
     transition: margin 0.8s, font-size 0.8s;
     margin: 0;
+    color: #444444;
   }
   &::before {
     content: "";

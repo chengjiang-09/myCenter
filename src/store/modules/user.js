@@ -1,5 +1,5 @@
 import { tokenCookie, tokenTimeOutCookie } from '@/utils/auth'
-import { passwordLoginAPI, tokenToUserInfoAPI } from '@/api'
+import { passwordLoginAPI, tokenToUserInfoAPI, mobileLoginAPI } from '@/api'
 
 const state = () => {
   return {
@@ -52,6 +52,16 @@ const actions = {
   async passwordLogin (context, loginUser) {
     try {
       const { result, msg } = await passwordLoginAPI(loginUser)
+      context.commit('setUserInfo', result)
+      return msg
+    } catch (e) {
+      Promise.reject(e)
+      return '出错啦！'
+    }
+  },
+  async mobileLogin (context, loginUser) {
+    try {
+      const { result, msg } = await mobileLoginAPI(loginUser)
       context.commit('setUserInfo', result)
       return msg
     } catch (e) {

@@ -5,6 +5,7 @@
 -->
 <template>
   <div class="EnterPage">
+    <DynamicMouseFullow/>
     <div
       class="container"
       :class="[{ translatePage: tsFlag }, { translatePageClose: !tsFlag }]"
