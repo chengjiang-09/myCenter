@@ -16,6 +16,7 @@ export default {
 
 <style scoped lang="less">
     .ScreenProtection {
+      pointer-events: none;
       width: 100%;
       height: 100%;
     &::before {

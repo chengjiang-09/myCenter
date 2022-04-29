@@ -40,6 +40,7 @@
         { translatePageFullLayout: tsFlag },
         { translatePageFullLayoutClose: !tsFlag },
       ]"
+      @mouseenter="mouseFollowEnter"
     >
       <div class="Closeicon">
         <div @click="tsFlag = false">
@@ -224,6 +225,7 @@ export default {
       }
     }
     .logo {
+      pointer-events: none;
       z-index: 100;
       position: absolute;
       width: 50%;
@@ -236,6 +238,7 @@ export default {
       }
     }
     .title {
+      pointer-events: none;
       z-index: 100;
       position: absolute;
       left: 50%;

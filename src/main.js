@@ -12,8 +12,9 @@ import 'normalize.css'
 import '@/styles/common.less'
 
 // 我的组件
-import myUI from '@/components/library'
+import myUI from '@/components/library/DynamicComponents'
+import myMixin from '@/components/library/myMixin'
 
 import './mock'
 
-createApp(App).use(store).use(router).use(myUI).mount('#app')
+createApp(App).use(store).use(router).use(myUI).mixin(myMixin).mount('#app')

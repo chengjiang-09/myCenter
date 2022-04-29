@@ -4,9 +4,8 @@
  * @LastEditTime: 2022-03-19 16:04:34
 -->
 <template>
-    <div class="MyLayout">
-      主页
-    </div>
+  <DynamicMouseFullow />
+  <div class="MyLayout">主页</div>
 </template>
 
 <script>
@@ -16,5 +15,4 @@ export default {
 </script>
 
 <style>
-
 </style>

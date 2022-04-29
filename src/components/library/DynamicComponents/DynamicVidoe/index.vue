@@ -24,6 +24,7 @@ export default {
   props: {
     src: {
       type: String,
+      // default: 'https://127.0.0.1:8000/video/wuxia.mp4'
       default: defualtVideo
     },
     autoplay: {
@@ -51,6 +52,7 @@ export default {
 
 <style scoped lang="less">
   video {
+    pointer-events: none;
     position: absolute;
     width: 100%;
     top: 50%;
