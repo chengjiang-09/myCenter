@@ -6,19 +6,21 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 export default {
   name: 'DynamicMouseFullow',
   setup () {
     const move = ref(null)
     const move2 = ref(null)
 
-    window.addEventListener('mousemove', (e) => {
-      const left = e.clientX - 50
-      const top = e.clientY - 50
+    onMounted(() => {
+      window.addEventListener('mousemove', (e) => {
+        const left = e.clientX - 50
+        const top = e.clientY - 50
 
-      move.value.style.transform = `translate3d(${left}px,${top}px,0px)`
-      move2.value.style.transform = `translate3d(${left}px,${top}px,0px)`
+        move.value.style.transform = `translate3d(${left}px,${top}px,0px)`
+        move2.value.style.transform = `translate3d(${left}px,${top}px,0px)`
+      })
     })
 
     return {

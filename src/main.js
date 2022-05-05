@@ -17,4 +17,12 @@ import myMixin from '@/components/library/myMixin'
 
 import './mock'
 
-createApp(App).use(store).use(router).use(myUI).mixin(myMixin).mount('#app')
+const app = createApp(App)
+
+app.config.errorHandler = (err, vm, info) => {
+  console.log(err)
+  console.log(vm)
+  console.log(info)
+}
+
+app.use(store).use(router).use(myUI).mixin(myMixin).mount('#app')

@@ -52,7 +52,7 @@ export default {
 
 <style scoped lang="less">
   video {
-    pointer-events: none;
+    user-select: none;
     position: absolute;
     width: 100%;
     top: 50%;

@@ -5,14 +5,43 @@
 -->
 <template>
   <DynamicMouseFullow />
-  <div class="MyLayout">主页</div>
+  <div class="container">
+    <!-- <AppSider /> -->
+    <ScreenProtection class="SP"/>
+    <ul class="BGimg">
+      <li><img src="~@/assets/images/2.jpg" alt="" /></li>
+    </ul>
+    <div class="layout">
+      <AppHeader />
+    </div>
+  </div>
 </template>
 
 <script>
+// import AppSider from '@/layout/components/appSider.vue'
+import AppHeader from '@/layout/pages/appHeader.vue'
+
 export default {
-  name: 'MyLayout'
+  name: 'MyLayout',
+  components: {
+    // AppSider
+    AppHeader
+  }
 }
 </script>
 
-<style>
+<style scoped lang="less">
+.container {
+  position: relative;
+  overflow: hidden;
+  .BGimg {
+    user-select: none;
+    li {
+      img {
+        width: 100vw;
+        height: auto;
+      }
+    }
+  }
+}
 </style>

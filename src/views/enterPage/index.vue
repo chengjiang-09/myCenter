@@ -14,13 +14,13 @@
       <div class="pageBox">
         <div class="enter">
           <div>
-            <RouterLink to="/center"><span> E N T E R </span> </RouterLink>
+            <RouterLink to="/center"><span> ENTER </span> </RouterLink>
           </div>
         </div>
         <div class="logo"></div>
         <div class="title">
           <h2>我是 chengjiang_09</h2>
-          <h3>欢 迎 来 到 我 的 <span>主 页</span> ！</h3>
+          <h3>欢迎来到我的 <span>主 页</span>！</h3>
         </div>
         <div class="accept">
           <p @click="tsFlag = true">
@@ -72,12 +72,18 @@ export default {
 
 <style scoped lang="less">
 .translatePage {
-  transition: all 2s;
+  transition: transform 2s;
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
   width: 100%;
   height: 100vh;
   transform: translate(-35%, 0%);
+  .accept {
+    pointer-events: none;
+  }
+  .enter {
+    pointer-events: none;
+  }
 
   .SP {
     &::before {
@@ -120,10 +126,6 @@ export default {
     }
   }
 
-  .accept {
-    display: none;
-  }
-
   .enter {
     div {
       span {
@@ -136,9 +138,9 @@ export default {
 }
 
 .translatePageClose {
-  transition: all 2s;
+  transition: transform 2s;
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
   width: 100%;
   height: 100vh;
   transform: translate(0%, 0%);
@@ -165,8 +167,7 @@ export default {
 
 .translatePageFullLayout {
   transition: all 2s;
-  right: -8% !important;
-  transform: translate(-25%, 0%);
+  transform: translate(-1%, 0%) !important;
 }
 
 .translatePageFullLayoutClose {
@@ -191,12 +192,13 @@ export default {
           user-select: none;
           color: #fff;
           position: relative;
+          font-size: 24px;
           &::before {
             content: "";
             position: absolute;
             z-index: -1;
-            top: -255%;
-            left: -97%;
+            top: -150%;
+            left: -68%;
             width: 0;
             height: 0;
             animation: enterBG 2s linear 0s infinite;
@@ -251,6 +253,7 @@ export default {
 
       h2,
       h3 {
+        // font-family: myFont;
         user-select: none;
       }
       h2 {
@@ -291,7 +294,7 @@ export default {
           display: block;
           margin-bottom: 7px;
           width: 40px;
-          transition: all 0.5s;
+          transition: transform 0.5s;
           border: 2px solid #fff;
           &:nth-child(2) {
             width: 37px;
@@ -317,9 +320,10 @@ export default {
     position: fixed;
     width: 34%;
     height: 100%;
-    right: -100%;
+    right: 0;
     background-color: #fff;
     top: 0;
+    transform: translate(101%,0);
     .Closeicon {
       z-index: 999;
       position: relative;

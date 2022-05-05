@@ -16,11 +16,12 @@ export default {
 
 <style scoped lang="less">
     .ScreenProtection {
-      pointer-events: none;
+      user-select: none;
       width: 100%;
       height: 100%;
     &::before {
-      z-index: -1;
+      transform: translateZ(0);
+      // z-index: -1;
       content: "";
       position: absolute;
       top: 0;
@@ -36,6 +37,7 @@ export default {
     }
     &::after {
       content: "";
+      transform: translateZ(0);
       position: absolute;
       top: 0;
       width: 200%;

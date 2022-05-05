@@ -45,6 +45,7 @@ export default {
 <style scoped lang="less">
 @width: 12vw;
 .DynamicATitle {
+  transform: translateZ(0);
   cursor: pointer;
   position: relative;
   transition: color 0.6s;

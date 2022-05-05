@@ -39,6 +39,8 @@ export default {
 
 <style scoped lang="less">
 .DynamicButton {
+  user-select: none;
+  transform: translateZ(0);
   transition: border 0.3s;
   color: #666666;
   font-weight:600;
