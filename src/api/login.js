@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 手机验证码API
 export const mobileCode = () => {
   return request(
-    '/mobile/code',
+    '/my/mobile/code',
     'get'
   )
 }
@@ -11,7 +11,7 @@ export const mobileCode = () => {
 // 验证码登录API
 export const mobileLogin = (data) => {
   return request(
-    '/mobile/login',
+    '/my/mobile/login',
     'post',
     data
   )
@@ -20,7 +20,7 @@ export const mobileLogin = (data) => {
 // 手机号密码登录API
 export const passwordLogin = (data) => {
   return request(
-    '/login',
+    '/my/login',
     'post',
     data
   )

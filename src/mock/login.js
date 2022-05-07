@@ -15,6 +15,7 @@ export const mobileLogin = (Mock) => {
       return {
         msg: '登录成功',
         result: {
+          name: 'chengjiang_09',
           status: 1,
           id: 1,
           mobile: 18286427545,

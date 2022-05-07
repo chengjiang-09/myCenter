@@ -17,8 +17,13 @@
             {{ context }}
           </p>
         </div>
-        <div class="btn">
-          <DynamicButton :width="8" @click="clear = false">
+        <div class="Nobtn">
+          <DynamicButton :width="8" @click="closeClick(false)">
+            取消
+          </DynamicButton>
+        </div>
+        <div class="Yesbtn">
+          <DynamicButton :width="8" @click="closeClick(true)">
             确定
           </DynamicButton>
         </div>
@@ -31,6 +36,7 @@
 import { Close } from '@element-plus/icons-vue'
 import DynamicButton from '@/components/library/DynamicComponents/DynamicButton'
 import { onMounted, ref } from 'vue'
+import store from '@/store'
 export default {
   name: 'DynamicAlert',
   components: {
@@ -49,17 +55,29 @@ export default {
     context: {
       type: String,
       default: '警告！'
+    },
+    callback: {
+      type: Function,
+      default: function (flag) {
+        return flag
+      }
     }
   },
-  setup () {
+  setup (props) {
     const clear = ref(false)
 
     onMounted(() => {
       clear.value = true
     })
 
+    const closeClick = (flag) => {
+      props.callback(flag)
+      clear.value = false
+      store.commit('setAlertFlag', flag)
+    }
+
     return {
-      clear
+      clear, closeClick
     }
   }
 }
@@ -131,9 +149,14 @@ export default {
       }
     }
 
-    .btn {
+    .Nobtn {
       position: absolute;
       right: 1vw;
+      bottom: 1vh;
+    }
+    .Yesbtn {
+      position: absolute;
+      left: 1vw;
       bottom: 1vh;
     }
   }

@@ -20,6 +20,7 @@
 
 <script>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 export default {
   name: 'DynamicA',
   props: {
@@ -34,9 +35,13 @@ export default {
   },
   setup (props, { emit }) {
     const flag = ref(false)
+    const router = useRouter()
 
     const onClick = (e) => {
       emit('onClick', e)
+      if (props.path.length !== 0) {
+        router.push(props.path)
+      }
     }
 
     return {

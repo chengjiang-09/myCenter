@@ -9,10 +9,7 @@ import router from '@/router'
 import store from '@/store'
 import { tokenCookie, tokenTimeOutCookie } from '@/utils/auth'
 
-export const baseURL = 'https://127.0.0.1:8000'
-
 const request = axios.create({
-  baseURL,
   timeout: 5000
 })
 

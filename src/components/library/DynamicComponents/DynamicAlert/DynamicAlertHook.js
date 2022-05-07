@@ -5,9 +5,9 @@ const vessel = document.createElement('div')
 vessel.setAttribute('class', 'DyAlert')
 document.body.appendChild(vessel)
 
-export default ({ title, context, titleSize = 24 }) => {
+export default ({ title, context, titleSize = 24, callback }) => {
   render(null, vessel)
-  const Vnode = createVNode(DynamicAlert, { title, context, titleSize })
+  const Vnode = createVNode(DynamicAlert, { title, context, titleSize, callback })
 
   render(Vnode, vessel)
 }

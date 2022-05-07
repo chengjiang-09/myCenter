@@ -7,12 +7,12 @@
     <div class="app-nav">
       <div>
         <ul v-if="token && userInfo.id">
-          <li><span>{{ userInfo.name }} </span><span>欢迎你！</span></li>
-          <li><DynamicA @onClick="down">退 出</DynamicA></li>
+          <li><DynamicA><span>{{ userInfo.name }} </span><span> 欢迎你！</span></DynamicA></li>
+          <li><DynamicA @onClick="loginOut">退 出</DynamicA></li>
         </ul>
         <ul v-else>
-          <li><DynamicA @onClick="down">登 录</DynamicA></li>
-          <li><DynamicA @onClick="down">注 册</DynamicA></li>
+          <li><DynamicA path="/">登 录</DynamicA></li>
+          <li><DynamicA path="/">注 册</DynamicA></li>
         </ul>
       </div>
     </div>
@@ -22,11 +22,14 @@
 <script>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import { tokenCookie } from '@/utils/auth'
+import DynamicAlert from '@/components/library/DynamicComponents/DynamicAlert/DynamicAlertHook.js'
 export default {
   name: 'AppHeader',
   setup () {
     const store = useStore()
+    const router = useRouter()
 
     const userInfo = computed({
       get () {
@@ -40,12 +43,21 @@ export default {
       }
     })
 
-    const down = (e) => {
-      console.log(e)
+    const loginOut = (e) => {
+      DynamicAlert({
+        title: '通知',
+        context: '是否确认退出？',
+        callback: (flag) => {
+          if (flag) {
+            tokenCookie.removeToken()
+            router.push('/')
+          }
+        }
+      })
     }
 
     return {
-      down, token, userInfo
+      loginOut, token, userInfo
     }
   }
 }
@@ -54,6 +66,7 @@ export default {
 <style scoped lang="less">
 .app-header {
   position: fixed;
+  z-index: 999;
   left: 0;
   top: 0;
   width: 100vw;

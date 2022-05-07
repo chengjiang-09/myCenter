@@ -15,7 +15,7 @@ import '@/styles/common.less'
 import myUI from '@/components/library/DynamicComponents'
 import myMixin from '@/components/library/myMixin'
 
-import './mock'
+// import './mock'
 
 const app = createApp(App)
 

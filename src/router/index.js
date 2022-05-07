@@ -56,6 +56,7 @@ router.beforeEach(async (to, from) => {
       return true
     }
   } else {
+    store.commit('user/setUserInfo', {})
     if (TokenHasList.indexOf(to.path) > -1) {
       return {
         path: `/?redirectURL=${to.fullPath}`

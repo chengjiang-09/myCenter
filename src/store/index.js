@@ -11,7 +11,6 @@ import user from './modules/user'
 export default createStore({
   state: () => {
     return {
-
     }
   },
   getters,

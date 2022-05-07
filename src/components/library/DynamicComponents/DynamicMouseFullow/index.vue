@@ -1,31 +1,41 @@
 <template>
-  <div class="mouseBG" ref="move"></div>
-  <div class="secondMouseBG" ref="move2">
+  <div class="mouseBG" ></div>
+  <div class="secondMouseBG" >
     CLICK
   </div>
 </template>
 
 <script>
-import { onMounted, ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 export default {
   name: 'DynamicMouseFullow',
   setup () {
-    const move = ref(null)
-    const move2 = ref(null)
+    const mouseBG = ref(null)
+    const secondMouseBG = ref(null)
+
+    const mouseFullow = (e) => {
+      const left = e.clientX - 50
+      const top = e.clientY - 50
+
+      mouseBG.value.style.transform = `translate3d(${left}px,${top}px,0px)`
+      secondMouseBG.value.style.transform = `translate3d(${left}px,${top}px,0px)`
+    }
 
     onMounted(() => {
-      window.addEventListener('mousemove', (e) => {
-        const left = e.clientX - 50
-        const top = e.clientY - 50
+      mouseBG.value = document.querySelector('.mouseBG')
+      secondMouseBG.value = document.querySelector('.secondMouseBG')
 
-        move.value.style.transform = `translate3d(${left}px,${top}px,0px)`
-        move2.value.style.transform = `translate3d(${left}px,${top}px,0px)`
-      })
+      window.addEventListener('mousemove', mouseFullow)
+    })
+
+    onBeforeUnmount(() => {
+      mouseBG.value = null
+      secondMouseBG.value = null
+
+      window.removeEventListener('mousemove', mouseFullow)
     })
 
     return {
-      move,
-      move2
     }
   }
 }

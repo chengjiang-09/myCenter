@@ -1,0 +1,84 @@
+{
+    "status": 0,
+    "result": {
+      "location": {
+        "country": "中国",
+        "province": "吉林省",
+        "city": "延边朝鲜族自治州",
+        "name": "龙井",
+        "id": "222405"
+      },
+      "now": {
+        "text": "阴",
+        "temp": 9,
+        "feels_like": 6,
+        "rh": 42,
+        "wind_class": "6级",
+        "wind_dir": "西北风",
+        "uptime": "20220507105000"
+      },
+      "forecasts": [
+        {
+          "text_day": "多云",
+          "text_night": "多云",
+          "high": 15,
+          "low": 6,
+          "wc_day": "3~4级",
+          "wd_day": "西北风",
+          "wc_night": "3~4级",
+          "wd_night": "西风",
+          "date": "2022-05-07",
+          "week": "星期六"
+        },
+        {
+          "text_day": "多云",
+          "text_night": "晴",
+          "high": 21,
+          "low": 4,
+          "wc_day": "3~4级",
+          "wd_day": "西北风",
+          "wc_night": "<3级",
+          "wd_night": "西风",
+          "date": "2022-05-08",
+          "week": "星期日"
+        },
+        {
+          "text_day": "晴",
+          "text_night": "晴",
+          "high": 24,
+          "low": 6,
+          "wc_day": "3~4级",
+          "wd_day": "西风",
+          "wc_night": "<3级",
+          "wd_night": "西南风",
+          "date": "2022-05-09",
+          "week": "星期一"
+        },
+        {
+          "text_day": "多云",
+          "text_night": "多云",
+          "high": 28,
+          "low": 7,
+          "wc_day": "3~4级",
+          "wd_day": "西南风",
+          "wc_night": "<3级",
+          "wd_night": "北风",
+          "date": "2022-05-10",
+          "week": "星期二"
+        },
+        {
+          "text_day": "阴",
+          "text_night": "多云",
+          "high": 25,
+          "low": 9,
+          "wc_day": "<3级",
+          "wd_day": "东北风",
+          "wc_night": "<3级",
+          "wd_night": "东北风",
+          "date": "2022-05-11",
+          "week": "星期三"
+        }
+      ]
+    },
+    "message": "success"
+  }

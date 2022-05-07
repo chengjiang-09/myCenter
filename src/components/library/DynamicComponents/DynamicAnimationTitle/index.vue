@@ -46,6 +46,7 @@ export default {
 @width: 12vw;
 .DynamicATitle {
   transform: translateZ(0);
+  user-select: none;
   cursor: pointer;
   position: relative;
   transition: color 0.6s;
