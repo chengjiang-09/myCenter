@@ -1,5 +1,5 @@
 <template>
-  <div class="app-header">
+  <div class="app-header" :class="{appheadershow:showFlag}">
     <i class="header-style"></i>
     <div class="app-logo">
       <h1>chengjiang_09的主页</h1>
@@ -20,11 +20,12 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { tokenCookie } from '@/utils/auth'
 import DynamicAlert from '@/components/library/DynamicComponents/DynamicAlert/DynamicAlertHook.js'
+import { COMPOMENT_SHOW_TIME } from '@/utils/keyWord.js'
 export default {
   name: 'AppHeader',
   setup () {
@@ -56,14 +57,27 @@ export default {
       })
     }
 
+    const showFlag = ref(false)
+
+    onMounted(() => {
+      setTimeout(() => {
+        showFlag.value = true
+      }, COMPOMENT_SHOW_TIME)
+    })
+
     return {
-      loginOut, token, userInfo
+      loginOut, token, userInfo, showFlag
     }
   }
 }
 </script>
 
 <style scoped lang="less">
+@COPONENT_SHOW_TIME: .7s;
+.appheadershow {
+  transform: translate(0%,0%) !important;
+}
+
 .app-header {
   position: fixed;
   z-index: 999;
@@ -73,6 +87,8 @@ export default {
   height: 10vh;
   backdrop-filter: blur(6px);
   background-color: transparent;
+  transition: transform @COPONENT_SHOW_TIME;
+  transform: translate(-200%,0%);
 
   .header-style {
     display: block;

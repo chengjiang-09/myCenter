@@ -1,0 +1,1 @@
+export const COMPOMENT_SHOW_TIME = 100

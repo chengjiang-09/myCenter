@@ -1,42 +1,43 @@
 <template>
-  <div class="DynamicNowWeather" v-if="placeWeather.forecasts.length !== 0">
-    <div class="weather">
-      <h3>近五天天气情况提醒：</h3>
-      <ul>
-        <li
-          v-for="(obj, index) in placeWeather.forecasts"
-          :key="obj.date"
-          class="weather-day"
-          @mousemove="enterShow(index)"
-          @mouseleave="enterClose(index)"
-        >
-          <p>
-            <span v-for="num in obj.date" :key="num">{{ num }}</span>
-          </p>
-          <p>
-            <span> {{ obj.week }}</span>
-          </p>
-          <p>
-            <span>最高气温 {{ obj.high }}℃ 最低气温 {{ obj.low }}℃</span>
-          </p>
-          <p>
-            <span>{{ obj.wd_day }} </span><span> {{ obj.wc_day }}</span>
-          </p>
-        </li>
-      </ul>
-      <p class="alertWarn" :class="{ alertWarnShow: alertWarnShow }">
-        <span>外出请注意天气情况哟~~~</span>
-      </p>
+    <div class="DynamicNowWeather" :class="{DynamicNowWeatherShow:showFlag}" >
+      <div class="weather">
+        <h3 v-show="showFlag">近五天天气情况提醒：</h3>
+        <ul>
+          <li
+            v-for="(obj, index) in placeWeather.forecasts"
+            :key="obj.date"
+            class="weather-day"
+            @mousemove="enterShow(index)"
+            @mouseleave="enterClose(index)"
+          >
+            <p>
+              <span v-for="num in obj.date" :key="num">{{ num }}</span>
+            </p>
+            <p>
+              <span> {{ obj.week }}</span>
+            </p>
+            <p>
+              <span>最高气温 {{ obj.high }}℃ 最低气温 {{ obj.low }}℃</span>
+            </p>
+            <p>
+              <span>{{ obj.wd_day }} </span><span> {{ obj.wc_day }}</span>
+            </p>
+          </li>
+        </ul>
+        <p class="alertWarn" :class="{ alertWarnShow: alertWarnShow }">
+          <span>外出请注意天气情况哟~~~</span>
+        </p>
+      </div>
     </div>
-  </div>
 </template>
 
 <script>
 // import { onMounted, ref, reactive } from 'vue'
 import { getUserPlaceWeatherAPI } from '@/api'
 import { reactive, ref } from 'vue'
-import { onBeforeMount } from '@vue/runtime-core'
+import { onBeforeMount, onMounted } from '@vue/runtime-core'
 import weather from '@/mock/weather.json'
+import { COMPOMENT_SHOW_TIME } from '@/utils/keyWord.js'
 export default {
   name: 'DynamicNowWeather',
   setup (props, { emit }) {
@@ -67,10 +68,6 @@ export default {
       }
     }
 
-    onBeforeMount(() => {
-      getPlaceOrWeather()
-    })
-
     const enterShow = (index) => {
       if (index === 0) {
         alertWarnShow.value = true
@@ -85,23 +82,49 @@ export default {
       }
     }
 
+    const showFlag = ref(false)
+
+    const showComponent = () => {
+      // console.log(placeWeather.forecasts)
+      if (placeWeather.forecasts) {
+        setTimeout(() => {
+          showFlag.value = true
+        }, COMPOMENT_SHOW_TIME)
+      }
+    }
+
+    onBeforeMount(() => {
+      getPlaceOrWeather()
+    })
+
+    onMounted(() => {
+      showComponent()
+    })
+
     return {
       placeWeather,
       enterShow,
       enterClose,
-      alertWarnShow
+      alertWarnShow,
+      showFlag
     }
   }
 }
 </script>
 
 <style scoped lang="less">
+@COPONENT_SHOW_TIME: .7s;
+.DynamicNowWeatherShow {
+  transform: translate(0%, -50%) !important;
+}
+
 .DynamicNowWeather {
   position: absolute;
   z-index: 2;
   top: 40%;
   right: 5%;
-  transform: translate(0%, -50%);
+  transition: transform @COPONENT_SHOW_TIME;
+  transform: translate(0%, -200%);
   .weather {
     position: relative;
     h3,
