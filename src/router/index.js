@@ -7,10 +7,14 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import { tokenCookie } from '@/utils/auth'
 import store from '@/store'
 
+import blogs from '@/router/modules/blogs.js'
+
 const EnterPage = () => import('@/views/enterPage')
 const EnterFulLayout = () => import('@/views/enterPage/EnterFulLayout.vue')
 
 const CenterLayout = () => import('@/layout')
+
+// const blogsListLayout = () => import('@/layout/components/blogsListLayout.vue')
 
 const routes = [
   {
@@ -26,8 +30,10 @@ const routes = [
   }, {
     path: '/center',
     component: CenterLayout,
-    children: []
-  }
+    children: [
+    ]
+  },
+  blogs
 ]
 
 const router = createRouter({

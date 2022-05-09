@@ -4,10 +4,9 @@
 
 <script>
 export default {
-
+  name: 'blogsPage'
 }
 </script>
 
 <style>
-
 </style>

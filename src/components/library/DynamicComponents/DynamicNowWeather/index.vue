@@ -1,5 +1,5 @@
 <template>
-    <div class="DynamicNowWeather" :class="{DynamicNowWeatherShow:showFlag}" >
+    <div class="DynamicNowWeather" :class="{DynamicNowWeatherShow:showFlag && placeWeather.forecasts}" >
       <div class="weather">
         <h3 v-show="showFlag">近五天天气情况提醒：</h3>
         <ul>
@@ -113,7 +113,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@COPONENT_SHOW_TIME: .7s;
+@COPONENT_SHOW_TIME: .8s;
 .DynamicNowWeatherShow {
   transform: translate(0%, -50%) !important;
 }

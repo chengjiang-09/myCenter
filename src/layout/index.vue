@@ -17,16 +17,16 @@
         :class="{ oneClose: oneBGFlag }"
       />
       <li class="one">
+        <BalloonLayout @oneClose="oneClose"/>
         <DynamicNowWeather
           @onMouseMove="onMouseMove"
           @onMouseLeave="onMouseLeave"
         />
       </li>
       <li class="two">
-        <div class="two-body"></div>
+        <BlogsListLayout />
       </li>
       <li class="three">
-        <div class="three-body"></div>
       </li>
     </ul>
     <div class="layout">
@@ -37,14 +37,19 @@
 
 <script>
 // import AppSider from '@/layout/components/appSider.vue'
-import AppHeader from '@/layout/pages/appHeader.vue'
+import AppHeader from '@/layout/appHeader.vue'
+import BalloonLayout from '@/layout/components/balloonLayout.vue'
+import BlogsListLayout from '@/layout/components/blogsListLayout.vue'
+
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 
 export default {
   name: 'MyLayout',
   components: {
     // AppSider
-    AppHeader
+    BalloonLayout,
+    AppHeader,
+    BlogsListLayout
   },
   setup () {
     const oneBGFlag = ref(false)
@@ -88,11 +93,16 @@ export default {
       window.removeEventListener('scroll', BGChange)
     })
 
+    const oneClose = (flag) => {
+      oneBGFlag.value = flag
+    }
+
     return {
       onMouseMove,
       onMouseLeave,
       oneBGFlag,
-      BG
+      BG,
+      oneClose
     }
   }
 }
