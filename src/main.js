@@ -14,6 +14,7 @@ import '@/styles/common.less'
 // 我的组件
 import myUI from '@/components/library/DynamicComponents'
 import myMixin from '@/components/library/myMixin'
+import myDirective from '@/components/library/MyGlobalProperties'
 
 // import './mock'
 
@@ -25,4 +26,4 @@ app.config.errorHandler = (err, vm, info) => {
   console.log(info)
 }
 
-app.use(store).use(router).use(myUI).mixin(myMixin).mount('#app')
+app.use(store).use(router).use(myUI).mixin(myMixin).use(myDirective).mount('#app')

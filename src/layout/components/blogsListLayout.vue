@@ -1,12 +1,32 @@
 <template>
   <div class="blogsListLayout">
-
+    <DynamicBlogsFrame
+      v-for="obj in blogsList"
+      :key="obj.id"
+      :picPlace="obj.picPlace"
+      :picName="obj.picName"
+      :title="obj.title"
+      :path="`/blogs/${obj.id}`"
+    />
+    <DynamicPaging @pageNum="pageNum"/>
   </div>
 </template>
 
 <script>
+import blogsObj from '@/mock/blogs.json'
 export default {
-  name: 'blogsListLayout'
+  name: 'blogsListLayout',
+  setup () {
+    const blogsList = blogsObj.blogs
+
+    const pageNum = (pageID) => {
+      console.log(pageID)
+    }
+
+    return {
+      blogsList, pageNum
+    }
+  }
 }
 </script>
 
