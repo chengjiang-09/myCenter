@@ -6,25 +6,36 @@
       :picPlace="obj.picPlace"
       :picName="obj.picName"
       :title="obj.title"
-      :path="`/blogs/${obj.id}`"
+      :path="`/center/blogs/${obj.id}`"
     />
-    <DynamicPaging @pageNum="pageNum"/>
+    <!-- :class="[{moveFrame:moveFrameFlag},{noMoveFrame:!moveFrameFlag}]" -->
+    <DynamicPaging @pageNum="pageNum" :pageNums="pageNums"/>
   </div>
 </template>
 
 <script>
-import blogsObj from '@/mock/blogs.json'
+import { ref } from 'vue'
+import { useStore } from 'vuex'
 export default {
   name: 'blogsListLayout',
   setup () {
-    const blogsList = blogsObj.blogs
+    const store = useStore()
 
-    const pageNum = (pageID) => {
-      console.log(pageID)
+    const blogsList = ref(null)
+    const pageNums = ref(store.state.center.blogsPageNumberMax)
+
+    store.dispatch('center/updateBlogs', 1)
+
+    const pageNum = (pageNumber) => {
+      store.dispatch('center/updateBlogs', pageNumber)
+
+      blogsList.value = store.state.center.blogs[pageNumber]
     }
 
+    pageNums.value = store.state.center.blogsPageNumberMax
+
     return {
-      blogsList, pageNum
+      blogsList, pageNum, pageNums
     }
   }
 }

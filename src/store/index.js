@@ -7,6 +7,7 @@ import { createStore } from 'vuex'
 import getters from './getters'
 
 import user from './modules/user'
+import center from './modules/center'
 
 export default createStore({
   state: () => {
@@ -19,6 +20,7 @@ export default createStore({
   actions: {
   },
   modules: {
-    user
+    user,
+    center
   }
 })

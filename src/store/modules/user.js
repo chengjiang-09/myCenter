@@ -1,15 +1,17 @@
 import { tokenCookie, tokenTimeOutCookie } from '@/utils/auth'
 import { passwordLoginAPI, tokenToUserInfoAPI, mobileLoginAPI } from '@/api'
+import storageKey from '@/utils/storageKey'
 
 const state = () => {
   return {
-    userInfo: {}
+    userInfo: JSON.parse(localStorage.getItem(storageKey.USER_INFO)) || {}
   }
 }
 const mutations = {
   setUserInfo (state, userInfo) {
     if (!userInfo.token) {
       state.userInfo = userInfo
+      localStorage.setItem(storageKey.USER_INFO, JSON.stringify(state.userInfo))
       return
     }
 
@@ -27,6 +29,7 @@ const mutations = {
     })()
 
     state.userInfo = newUserInfo
+    localStorage.setItem(storageKey.USER_INFO, JSON.stringify(state.userInfo))
   }
 }
 

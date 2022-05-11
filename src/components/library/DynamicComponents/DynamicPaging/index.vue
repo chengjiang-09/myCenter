@@ -25,25 +25,26 @@ export default {
     ArrowRightBold
   },
   props: {
-    pageNum: {
+    pageNums: {
       type: [Number, String],
       default: 5
     }
   },
   setup (props, { emit }) {
     const pageList = reactive([])
-
-    for (let i = 0; i < props.pageNum; i++) {
-      const id = ref(i)
-      const flag = ref(false)
-      if (i === 0) {
-        flag.value = true
+    onMounted(() => {
+      for (let i = 0; i < props.pageNums; i++) {
+        const id = ref(i)
+        const flag = ref(false)
+        if (i === 0) {
+          flag.value = true
+        }
+        pageList.push({
+          id: id.value + 1,
+          flag: flag.value
+        })
       }
-      pageList.push({
-        id: id.value + 1,
-        flag: flag.value
-      })
-    }
+    })
 
     const list = ref(null)
     const translateBase = ref(6)
@@ -61,7 +62,7 @@ export default {
     }
 
     const goLeft = () => {
-      if (translateBase.value !== 6 - (props.pageNum - 1) * 3) {
+      if (translateBase.value !== 6 - (props.pageNums - 1) * 3) {
         activeID.value += 1
         translateBase.value -= 3
         moveList()

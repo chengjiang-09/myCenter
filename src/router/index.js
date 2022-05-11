@@ -12,6 +12,7 @@ import blogs from '@/router/modules/blogs.js'
 const EnterPage = () => import('@/views/enterPage')
 const EnterFulLayout = () => import('@/views/enterPage/EnterFulLayout.vue')
 
+const CenterPage = () => import('@/views/centerPage')
 const CenterLayout = () => import('@/layout')
 
 // const blogsListLayout = () => import('@/layout/components/blogsListLayout.vue')
@@ -24,16 +25,19 @@ const routes = [
       {
         path: '',
         component: EnterFulLayout
-
       }
     ]
   }, {
     path: '/center',
     component: CenterLayout,
     children: [
+      {
+        path: '',
+        component: CenterPage
+      },
+      blogs
     ]
-  },
-  blogs
+  }
 ]
 
 const router = createRouter({

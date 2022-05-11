@@ -51,14 +51,17 @@
 </template>
 
 <script>
-import ancientPoetry from '@/mock/ancientPoetry.json'
 import { COMPOMENT_SHOW_TIME } from '@/utils/keyWord.js'
 import { onMounted, ref } from 'vue'
+import { useStore } from 'vuex'
 export default {
   name: 'balloonLayout',
   emits: ['oneClose'],
   setup (props, { emit }) {
-    const Poetry = ancientPoetry.poetry
+    const store = useStore()
+    store.dispatch('center/updateAncientPoetry')
+
+    const Poetry = ref(store.state.center.ancientPoetry)
 
     const showFlag = ref(false)
 
@@ -71,7 +74,7 @@ export default {
     })
 
     const readPoetry = (id) => {
-      Poetry.forEach((obj) => {
+      Poetry.value.forEach((obj) => {
         if (obj.id === id) {
           emit('oneClose', true)
           showFlag.value = false

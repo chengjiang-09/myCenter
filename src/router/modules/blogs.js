@@ -1,6 +1,6 @@
 const BlogsPage = () => import('@/views/blogsPage')
 
 export default {
-  path: '/blogs/:id',
+  path: 'blogs/:id',
   component: BlogsPage
 }
