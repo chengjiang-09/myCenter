@@ -18,6 +18,7 @@
         <BlogsListLayout />
       </li>
       <li class="three">
+        <BottomCommentLayout />
       </li>
     </ul>
 </template>
@@ -25,6 +26,7 @@
 <script>
 import BalloonLayout from '@/layout/components/balloonLayout.vue'
 import BlogsListLayout from '@/layout/components/blogsListLayout.vue'
+import BottomCommentLayout from '@/layout/components/bottomCommentLayout.vue'
 
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 export default {
@@ -32,7 +34,8 @@ export default {
   components: {
     // AppSider
     BalloonLayout,
-    BlogsListLayout
+    BlogsListLayout,
+    BottomCommentLayout
   },
   setup () {
     const oneBGFlag = ref(false)
@@ -99,43 +102,35 @@ export default {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
+      width: 100%;
       height: auto;
       clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
       transform: translate(0%,0%);
       transition: clip-path 0.5s,opacity .8s,transform .8s;
-      // transition: opacity .1s;;
+
     }
     .oneClose {
       clip-path: polygon(50% 10%, 60% 50%, 50% 90%, 40% 50%);
     }
     .one {
       display: block;
-      width: 100vw;
+      width: 100%;
       height: 100vh;
       position: relative;
-      // height: 100vh;
-      // background-color: #000;
+
     }
     .two {
       position: relative;
       display: block;
-      width: 100vw;
+      width: 100%;
       height: 250vh;
-      // background-color: #000;
 
-      // &-body {
-      //   width: 100vw;
-      //   height: 100vh;
-      //   background-color: #000;
-      // }
     }
     .three {
       position: relative;
       display: block;
-      width: 100vw;
+      width: 100%;
       height: 250vh;
-      // background-color: #000;
     }
   }
 </style>

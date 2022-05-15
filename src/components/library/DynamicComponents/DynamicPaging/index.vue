@@ -4,7 +4,7 @@
           <ArrowLeftBold />
       </div>
       <div class="pageNumList">
-          <ul class="container" ref="list">
+          <ul class="DynamicPaging-container" ref="list">
               <li v-for="obj in pageList" :key="obj.id" :class="[{liActive:obj.flag}]" @click="goThis(obj.id)">{{ obj.id }}</li>
           </ul>
       </div>
@@ -129,7 +129,7 @@ export default {
         height: 6vw;
         width: 30vw;
         line-height: 6vw;
-        .container {
+        .DynamicPaging-container {
             position: absolute;
             transform: translate(6%,0%);
             height: 3vw;

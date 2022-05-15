@@ -41,7 +41,7 @@ export default {
       return picPlace
     }
 
-    const picLeft = getPlace(120, 50)
+    const picLeft = getPlace(120, 43)
     const titleLeft = picLeft - 30
     const pic = ref(null)
     const showFlag = ref(false)

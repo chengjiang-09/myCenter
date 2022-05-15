@@ -7,7 +7,7 @@
   <div class="EnterPage">
     <DynamicMouseFullow/>
     <div
-      class="container"
+      class="EnterPage-container"
       :class="[{ translatePage: tsFlag }, { translatePageClose: !tsFlag }]"
     >
       <ScreenProtection class="SP" />
@@ -180,7 +180,7 @@ export default {
   overflow-x: hidden;
   width: 100%;
   height: 100vh;
-  .container {
+  .EnterPage-container {
     .enter {
       z-index: 100;
       position: absolute;

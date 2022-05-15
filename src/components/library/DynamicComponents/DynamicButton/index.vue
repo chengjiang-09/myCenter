@@ -7,6 +7,7 @@
       height: `${height}vh`,
       borderColor: borderColor,
       fontSize: `${fontSize}px`,
+      borderRadius: `${borderRadius}vh`
     }"
   >
     <slot />
@@ -32,6 +33,10 @@ export default {
     fontSize: {
       type: Number,
       default: 16
+    },
+    borderRadius: {
+      type: Number,
+      default: 2.5
     }
   }
 }
@@ -42,7 +47,7 @@ export default {
   user-select: none;
   transform: translateZ(0);
   transition: border 0.3s;
-  color: #666666;
+  color: #000;
   font-weight:600;
   cursor: pointer;
   border-top: 1px solid;

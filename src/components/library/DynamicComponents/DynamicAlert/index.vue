@@ -1,7 +1,7 @@
 <template>
   <transition name="fade-alert" mode="out-in" appear>
     <div class="DynamicAlert" v-if="clear">
-      <div class="container">
+      <div class="DynamicAlert-container">
         <div class="top">
           <span :style="{ fontSize: `${titleSize}px` }">{{ title }}</span>
           <span
@@ -112,7 +112,7 @@ export default {
   border: 1px solid @baseColor;
   border-radius: 1vw 1vw;
   opacity: 0.9;
-  .container {
+  .DynamicAlert-container {
     width: 100%;
     height: 100%;
     position: relative;

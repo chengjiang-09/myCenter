@@ -1,7 +1,8 @@
 import ancientPoetry from '@/mock/ancientPoetry.json'
 import blogsObj from '@/mock/blogs.json'
+import commentList from '@/mock/comment.json'
 
-import storageKey from '@/utils/storageKey'
+import vuexStoreKey from '@/utils/vuexStoreKey'
 
 const objIsEmpty = (obj, key) => {
   if (Object.prototype.hasOwnProperty.call(obj, key)) {
@@ -12,24 +13,29 @@ const objIsEmpty = (obj, key) => {
 
 const state = () => {
   return {
-    ancientPoetry: JSON.parse(localStorage.getItem(storageKey.ANCIENT_POETRY)) || [],
-    blogs: JSON.parse(localStorage.getItem(storageKey.BLOGS)) || {},
-    blogsPageNumberMax: JSON.parse(localStorage.getItem(storageKey.BLOGS_PAGE_NUMBER_MAX)) || 0
+    ancientPoetry: JSON.parse(localStorage.getItem(vuexStoreKey.ANCIENT_POETRY)) || [],
+    blogs: JSON.parse(localStorage.getItem(vuexStoreKey.BLOGS)) || {},
+    blogsPageNumberMax: JSON.parse(localStorage.getItem(vuexStoreKey.BLOGS_PAGE_NUMBER_MAX)) || 0,
+    commentList: JSON.parse(localStorage.getItem(vuexStoreKey.COMMENTLIST)) || []
   }
 }
 
 const mutations = {
   setAncientPoetry (state, payload) {
     state.ancientPoetry = payload
-    localStorage.setItem(storageKey.ANCIENT_POETRY, JSON.stringify(state.ancientPoetry))
+    localStorage.setItem(vuexStoreKey.ANCIENT_POETRY, JSON.stringify(state.ancientPoetry))
   },
   setBlogs (state, obj) {
     state.blogs[obj.pageNumber] = obj.blogsList
-    localStorage.setItem(storageKey.BLOGS, JSON.stringify(state.blogs))
+    localStorage.setItem(vuexStoreKey.BLOGS, JSON.stringify(state.blogs))
   },
   setBlogsPageNumberMax (state, num) {
     state.blogsPageNumberMax = num
-    localStorage.setItem(storageKey.BLOGS_PAGE_NUMBER_MAX, JSON.stringify(state.blogsPageNumberMax))
+    localStorage.setItem(vuexStoreKey.BLOGS_PAGE_NUMBER_MAX, JSON.stringify(state.blogsPageNumberMax))
+  },
+  setCommentList (state, List) {
+    state.commentList = List
+    localStorage.setItem(vuexStoreKey.COMMENTLIST, JSON.stringify(state.commentList))
   }
 }
 
@@ -69,6 +75,31 @@ const actions = {
         })
 
         context.commit('setBlogsPageNumberMax', blogsKeyList.length)
+      }
+    }
+  },
+  updateCommentList (context) {
+    if (context.state.commentList.length === 0) {
+      try {
+        // commnetList = "数据"
+        throw new Error('评论列表暂无接口')
+      } catch (e) {
+        console.log(e.message, ',将使用默认静态数据')
+
+        const comments = commentList.commentList
+
+        const initCommentList = (comments, base = 0) => {
+          const list = []
+          comments.forEach(obj => {
+            if (obj.masterID === base) {
+              obj.children = initCommentList(comments, obj.id)
+              list.push(obj)
+            }
+          })
+          return list
+        }
+
+        context.commit('setCommentList', initCommentList(comments))
       }
     }
   }

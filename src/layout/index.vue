@@ -5,7 +5,7 @@
 -->
 <template>
   <DynamicMouseFullow />
-  <div class="container">
+  <div class="MyLayout-container">
     <!-- <AppSider /> -->
     <ScreenProtection class="SP" />
     <RouterView />
@@ -28,8 +28,8 @@ export default {
 </script>
 
 <style scoped lang="less">
-.container {
+.MyLayout-container {
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 </style>

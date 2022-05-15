@@ -1,17 +1,17 @@
 import { tokenCookie, tokenTimeOutCookie } from '@/utils/auth'
 import { passwordLoginAPI, tokenToUserInfoAPI, mobileLoginAPI } from '@/api'
-import storageKey from '@/utils/storageKey'
+import vuexStoreKey from '@/utils/vuexStoreKey'
 
 const state = () => {
   return {
-    userInfo: JSON.parse(localStorage.getItem(storageKey.USER_INFO)) || {}
+    userInfo: JSON.parse(localStorage.getItem(vuexStoreKey.USER_INFO)) || {}
   }
 }
 const mutations = {
   setUserInfo (state, userInfo) {
     if (!userInfo.token) {
       state.userInfo = userInfo
-      localStorage.setItem(storageKey.USER_INFO, JSON.stringify(state.userInfo))
+      localStorage.setItem(vuexStoreKey.USER_INFO, JSON.stringify(state.userInfo))
       return
     }
 
@@ -29,7 +29,7 @@ const mutations = {
     })()
 
     state.userInfo = newUserInfo
-    localStorage.setItem(storageKey.USER_INFO, JSON.stringify(state.userInfo))
+    localStorage.setItem(vuexStoreKey.USER_INFO, JSON.stringify(state.userInfo))
   }
 }
 

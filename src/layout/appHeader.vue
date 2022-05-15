@@ -2,7 +2,9 @@
   <div class="app-header" :class="{appheadershow:showFlag}">
     <i class="header-style"></i>
     <div class="app-logo">
-      <h1>chengjiang_09的主页</h1>
+      <RouterLink to="/center">
+        <h1>chengjiang_09的主页</h1>
+      </RouterLink>
     </div>
     <div class="app-nav">
       <div>

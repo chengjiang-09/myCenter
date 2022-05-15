@@ -1,6 +1,6 @@
 <template>
-  <div class="container" @mouseenter="flag = !flag" @mouseleave="flag = !flag">
-    <a :href="href" @click="onClick">
+  <div class="DynamicA-container" @mouseenter="flag = !flag" @mouseleave="flag = !flag">
+    <a :href="href" @click="onClick" :style="{fontSize:`${fontSize}vw`}">
       <slot />
       <i
         class="decorateA"
@@ -31,6 +31,10 @@ export default {
     path: {
       type: String,
       default: ''
+    },
+    fontSize: {
+      type: [String, Number],
+      default: 2
     }
   },
   setup (props, { emit }) {
@@ -53,7 +57,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.container {
+.DynamicA-container {
   cursor: pointer;
   user-select: none;
   position: relative;
