@@ -24,7 +24,6 @@
 <script>
 import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
 import { tokenCookie } from '@/utils/auth'
 import DynamicAlert from '@/components/library/DynamicComponents/DynamicAlert/DynamicAlertHook.js'
 import { COMPOMENT_SHOW_TIME } from '@/utils/keyWord.js'
@@ -32,7 +31,6 @@ export default {
   name: 'AppHeader',
   setup () {
     const store = useStore()
-    const router = useRouter()
 
     const userInfo = computed({
       get () {
@@ -53,7 +51,7 @@ export default {
         callback: (flag) => {
           if (flag) {
             tokenCookie.removeToken()
-            router.push('/')
+            window.location.reload()
           }
         }
       })

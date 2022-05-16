@@ -6,11 +6,11 @@
       class="DynamicCommentSend-text"
       v-model="comment"
       placeholder="在这写下祝福！"
+      @keydown.enter="aClick"
     ></textarea>
     <a
       href="javascript:;"
       class="DynamicCommentSend-a"
-      :class="[{ aHover: aHoverFlag }]"
       @click="aClick"
       ><div class="DynamicCommentSend-btn">留下足迹</div
     ></a>

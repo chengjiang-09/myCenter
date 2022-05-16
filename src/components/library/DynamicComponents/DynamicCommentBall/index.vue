@@ -1,12 +1,24 @@
 <template>
   <div class="DynamicCommentBall">
-    <p class="comment" @click="downNav" :class="[{ commentOpen: donwNavFlag }]">
+    <p class="comment" @click="downNav">
       {{ data.context }}
     </p>
     <div class="downNav" :class="[{ downNavShow: donwNavFlag }]">
       <div class="send">
-        <input type="text" class="input" placeholder="回复TA" />
-        <button type="button" class="button">回复ta</button>
+        <input
+          type="text"
+          class="input"
+          placeholder="回复TA"
+          v-model="sendMasterText"
+          @keydown.enter="sendMaster(data.id, data.author)"
+        />
+        <button
+          type="button"
+          class="button"
+          @click="sendMaster(data.id, data.author)"
+        >
+          回复ta
+        </button>
       </div>
       <ul class="otherComment">
         <li class="otherCommentOne" v-for="obj in child" :key="obj.id">
@@ -18,7 +30,11 @@
             <p class="commentData">
               <span>ta说：{{ obj.context }}</span
               ><span
-                ><button type="button" class="buttonMaster" @click="sendTa(obj.id, obj.author)">
+                ><button
+                  type="button"
+                  class="buttonMaster"
+                  @click="sendTa(obj.id, obj.author)"
+                >
                   回复
                 </button></span
               >
@@ -50,7 +66,9 @@
                     <button
                       type="button"
                       class="button"
-                      @click="sendTa(obj.id, grandSonObj.author, grandSonObj.id)"
+                      @click="
+                        sendTa(obj.id, grandSonObj.author, grandSonObj.id)
+                      "
                     >
                       回复
                     </button></span
@@ -65,6 +83,8 @@
               type="text"
               class="allSendInput"
               placeholder="回复TA"
+              v-model="sendText"
+              @keyup.enter="goSend"
               @blur="allSendOnBlur(obj.id)"
             />
           </div>
@@ -75,10 +95,12 @@
 </template>
 
 <script>
-// import sendOneChildVNode from './sendOneChildVNode.vue'
-// import sendOneVNode from './sendOneVNode.vue'
-import { ref } from 'vue'
-// import { useStore } from 'vuex'
+import { computed, reactive, ref } from 'vue'
+import { tokenCookie } from '@/utils/auth.js'
+
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import myAlert from '@/components/library/DynamicComponents/DynamicAlert/DynamicAlertHook.js'
 export default {
   name: 'DynamicCommentBall',
   props: {
@@ -90,27 +112,121 @@ export default {
     }
   },
   setup (props) {
-    const donwNavFlag = ref(false)
-    const child = ref(props.data.children)
+    const donwNavFlag = ref(true)
+    const child = computed({
+      get () {
+        return props.data.children
+      }
+    })
     const grandSon = ref([])
-    const grandSonObjAll = ref({})
+    const grandSonObjAll = reactive({})
     const sendTarget = ref('')
+    const sendText = ref('')
+    const sendMasterText = ref('')
+    const sendCommentObj = {}
+    const nowDate = ref(null)
+
+    const router = useRouter()
+    const store = useStore()
+
+    const userInfo = store.state.user.userInfo
 
     const downNav = () => {
       donwNavFlag.value = !donwNavFlag.value
     }
 
-    const sendTa = (id, sendTargetName, otherID) => {
-      sendTarget.value = sendTargetName
-      child.value.forEach((obj) => {
-        if (obj.id === id) {
-          obj.sendBtnFlag = true
+    const goSend = async () => {
+      if (sendText.value.trim() !== '') {
+        nowDate.value = new Date()
+        sendCommentObj.id = parseInt(
+          `${userInfo.id}${nowDate.value.getFullYear()}${
+            nowDate.value.getMonth() + 1
+          }${nowDate.value.getDate()}${nowDate.value.getHours()}${nowDate.value.getMinutes()}${nowDate.value.getSeconds()}`
+        )
+        sendCommentObj.context = sendText.value
+        sendCommentObj.date = (function () {
+          return `${nowDate.value.getFullYear()}-${
+            nowDate.value.getMonth() + 1
+          }-${nowDate.value.getDate()}`
+        })()
+        await store.dispatch('center/updateCommentList', sendCommentObj)
+        initCommentList()
+        sendText.value = ''
+      } else {
+        myAlert({
+          title: '提示',
+          context: '评论内容不能为空！'
+        })
+      }
+    }
+
+    const sendMaster = async (id, sendTargetName) => {
+      if (tokenCookie.getToken()) {
+        sendCommentObj.masterName = sendTargetName
+        sendCommentObj.masterID = id
+        sendCommentObj.author = userInfo.name
+
+        if (sendMasterText.value.trim() !== '') {
+          nowDate.value = new Date()
+          sendCommentObj.id = parseInt(
+            `${userInfo.id}${nowDate.value.getFullYear()}${
+              nowDate.value.getMonth() + 1
+            }${nowDate.value.getDate()}${nowDate.value.getHours()}${nowDate.value.getMinutes()}${nowDate.value.getSeconds()}`
+          )
+          sendCommentObj.context = sendMasterText.value
+          sendCommentObj.date = (function () {
+            return `${nowDate.value.getFullYear()}-${
+              nowDate.value.getMonth() + 1
+            }-${nowDate.value.getDate()}`
+          })()
+          await store.dispatch('center/updateCommentList', sendCommentObj)
+          initCommentList()
+          sendMasterText.value = ''
         } else {
-          obj.sendBtnFlag = false
+          myAlert({
+            title: '提示',
+            context: '评论内容不能为空！'
+          })
         }
-      })
-      if (otherID) {
-        console.log(otherID)
+
+        goSend()
+      } else {
+        myAlert({
+          title: '提示',
+          context: '请登陆后再发布您的评论，是否前往登录页面？',
+          callback: (flag) => {
+            if (flag) {
+              router.push('/')
+            }
+          }
+        })
+      }
+    }
+
+    const sendTa = (id, sendTargetName, otherID) => {
+      if (tokenCookie.getToken()) {
+        sendTarget.value = sendTargetName
+        child.value.forEach((obj) => {
+          if (obj.id === id) {
+            obj.sendBtnFlag = true
+          } else {
+            obj.sendBtnFlag = false
+          }
+        })
+
+        sendCommentObj.masterName = sendTargetName
+        sendCommentObj.masterID = otherID || id
+        sendCommentObj.author = userInfo.name
+      } else {
+        myAlert({
+          title: '提示',
+          context: '请登陆后再发布您的评论，是否前往登录页面？',
+          callback: (flag) => {
+            if (flag) {
+              router.push('/')
+            }
+          }
+        })
       }
     }
 
@@ -122,54 +238,30 @@ export default {
       })
     }
 
-    if (child.value.length !== 0) {
-      const createGrandSonList = (grandSonData) => {
-        grandSonData.forEach((obj) => {
+    const initCommentList = () => {
+      if (child.value.length !== 0) {
+        const createGrandSonList = (grandSonData) => {
+          grandSonData.forEach((obj) => {
+            if (obj.children) {
+              createGrandSonList(obj.children)
+            }
+            grandSon.value.push(obj)
+          })
+        }
+        child.value.forEach((obj) => {
+          obj.sendBtnFlag = false
+          grandSon.value = []
           if (obj.children) {
             createGrandSonList(obj.children)
           }
-          grandSon.value.push(obj)
+          if (grandSon.value.length !== 0) {
+            grandSonObjAll[obj.id] = grandSon.value
+          }
         })
       }
-      child.value.forEach((obj) => {
-        obj.sendBtnFlag = false
-        grandSon.value = []
-        if (obj.children) {
-          createGrandSonList(obj.children)
-        }
-        if (grandSon.value.length !== 0) {
-          grandSonObjAll.value[obj.id] = grandSon.value
-        }
-      })
     }
 
-    // const comment = ref(null)
-
-    // const sendToSend = ref(null)
-
-    // onMounted(() => {
-    //   const commentList = store.state.center.commentList
-    //   const VNodeList = []
-
-    //   const createCommentVNode = (commentChildList) => {
-    //     if (commentChildList) {
-    //       commentChildList.forEach(obj => {
-    //         if (obj.children) {
-    //           createCommentVNode(obj.children)
-    //         }
-    //         VNodeList.push(createVNode(sendOneChildVNode, { author: obj.author, date: obj.date, master: obj.masterName, context: obj.context }))
-    //       })
-    //     }
-    //   }
-
-    //   commentList.forEach(obj => {
-    //     createCommentVNode(obj.children)
-    //   })
-
-    //   const defaultVNode = createVNode('ul', { class: 'sendToSendList' }, VNodeList)
-
-    //   render(defaultVNode, sendToSend.value)
-    // })
+    initCommentList()
 
     return {
       downNav,
@@ -178,7 +270,11 @@ export default {
       allSendOnBlur,
       child,
       grandSonObjAll,
-      sendTarget
+      sendTarget,
+      sendText,
+      goSend,
+      sendMaster,
+      sendMasterText
     }
   }
 }
@@ -187,15 +283,34 @@ export default {
 <style scoped lang="less">
 .DynamicCommentBall {
   position: relative;
+  padding: 3vh 1vw;
+  border-left: 1px dashed #fff;
+  border-right: 1px dashed #fff;
+  margin: 0 1vw 3vh 1vw;
+  border-radius: 0 50% 50% 0;
   .comment {
+    &:hover {
+      animation: hover 1s linear 0s infinite;
+
+      @keyframes hover {
+        0% {
+          opacity: 1;
+        }
+
+        50% {
+          opacity: 0.2;
+        }
+
+        100% {
+          opacity: 1;
+        }
+      }
+    }
     position: relative;
     cursor: pointer;
     font-size: 2vw;
     color: #fff;
-    width: 45vw;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    max-width: 45vw;
     .commentAuthor {
       display: block;
       position: absolute;
@@ -205,28 +320,26 @@ export default {
       height: 2vh;
     }
   }
-  .commentOpen {
-    overflow: initial;
-    text-overflow: initial;
-    white-space: initial;
-  }
   .downNav {
-    position: absolute;
-    z-index: 10;
-    top: 0;
-    left: 0;
-    transform: translate(0, 0);
-    background-color: #000;
+    // position: absolute;
+    // z-index: 10;
+    // top: 0%;
+    // left: 50%;
+    // transform: translate(-50%, 0);
+    height: 0;
+    background-color: transparent;
     opacity: 0;
     user-select: none;
     pointer-events: none;
     width: 41vw;
-    transition: transform 0.6s, opacity 0.6s;
+    transition: opacity 0.6s, height 0.6s;
     .send {
       display: flex;
       justify-content: space-between;
       .input {
+        padding: 3vh 1vw 1vh;
         width: 35vw;
+        font-size: 1.2vw;
         border-top: 0;
         border-left: 0;
         border-right: 0;
@@ -242,6 +355,7 @@ export default {
     }
     .otherComment {
       .otherCommentOne {
+        padding: 1vh 2vw;
         .otherCommentOneData {
           &:hover {
             .buttonMaster {
@@ -310,7 +424,8 @@ export default {
   }
 
   .downNavShow {
-    transform: translate(0, 6vh);
+    height: 100%;
+    // top: 100%;
     opacity: 1;
     user-select: initial;
     pointer-events: initial;

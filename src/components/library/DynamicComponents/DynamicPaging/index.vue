@@ -33,9 +33,11 @@ export default {
   setup (props, { emit }) {
     const pageList = reactive([])
     onMounted(() => {
+      const id = ref(0)
+      const flag = ref(false)
       for (let i = 0; i < props.pageNums; i++) {
-        const id = ref(i)
-        const flag = ref(false)
+        id.value = i
+        flag.value = false
         if (i === 0) {
           flag.value = true
         }

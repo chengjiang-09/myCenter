@@ -78,7 +78,12 @@ const actions = {
       }
     }
   },
-  updateCommentList (context) {
+  updateCommentList (context, sendData) {
+    if (sendData) {
+      // 更新评论列表数据
+      context.commit('setCommentList', [])
+      console.log(sendData)
+    }
     if (context.state.commentList.length === 0) {
       try {
         // commnetList = "数据"

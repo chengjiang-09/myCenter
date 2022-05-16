@@ -36,7 +36,6 @@
 import { Close } from '@element-plus/icons-vue'
 import DynamicButton from '@/components/library/DynamicComponents/DynamicButton'
 import { onMounted, ref } from 'vue'
-import store from '@/store'
 export default {
   name: 'DynamicAlert',
   components: {
@@ -73,7 +72,6 @@ export default {
     const closeClick = (flag) => {
       props.callback(flag)
       clear.value = false
-      store.commit('setAlertFlag', flag)
     }
 
     return {
