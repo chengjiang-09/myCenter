@@ -4,8 +4,8 @@
     <ul>
       <li>
         <DynamicIText
-          v-model:value="loginUser.mobile"
-          title="请输入手机号"
+          v-model:value="loginUser.email"
+          title="请输入您的邮箱"
           :warnText="warnText"
           @blur="valiBlur"
         />
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { valiMobile } from './valiabel'
+import { valiEmail } from './valiabel'
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
@@ -39,7 +39,7 @@ export default {
   name: 'EnterPassword',
   setup () {
     const loginUser = reactive({
-      mobile: '',
+      email: '',
       password: ''
     })
 
@@ -52,8 +52,8 @@ export default {
     const warnPwText = ref('')
 
     const valiBlur = () => {
-      if (!valiMobile(loginUser.mobile)) {
-        warnText.value = '请输入正确的手机号码！'
+      if (!valiEmail(loginUser.email)) {
+        warnText.value = '请输入正确的邮箱！'
       } else {
         warnText.value = ''
         loginFlag = true
@@ -73,13 +73,12 @@ export default {
       valiBlur()
       valiPasswordBlur()
       if (loginFlag) {
-        if (valiMobile(loginUser.mobile) && loginUser.password.length !== 0) {
+        if (valiEmail(loginUser.email) && loginUser.password.length !== 0) {
           loginFlag = false
 
-          const msg = await store.dispatch('user/passwordLogin', loginUser)
-          const result = store.state.user.userInfo
+          const { msg, status } = await store.dispatch('user/passwordLogin', loginUser)
 
-          if (result.status === 1) {
+          if (status === 1) {
             router.push('/center')
           } else {
             loginUser.password = ''

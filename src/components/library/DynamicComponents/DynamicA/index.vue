@@ -1,6 +1,10 @@
 <template>
-  <div class="DynamicA-container" @mouseenter="flag = !flag" @mouseleave="flag = !flag">
-    <a :href="href" @click="onClick" :style="{fontSize:`${fontSize}vw`}">
+  <div
+    class="DynamicA-container"
+    @mouseenter="flag = !flag"
+    @mouseleave="flag = !flag"
+  >
+    <a :href="href" @click="onClick" :style="{ fontSize: `${fontSize}vw` }">
       <slot />
       <i
         class="decorateA"

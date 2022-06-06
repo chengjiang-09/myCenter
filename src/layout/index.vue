@@ -11,6 +11,7 @@
     <RouterView />
     <div class="layout">
       <AppHeader />
+      <AppFooter />
     </div>
   </div>
 </template>
@@ -18,11 +19,13 @@
 <script>
 // import AppSider from '@/layout/components/appSider.vue'
 import AppHeader from '@/layout/appHeader.vue'
+import AppFooter from '@/layout/appFooter.vue'
 export default {
   name: 'MyLayout',
   components: {
     // AppSider
-    AppHeader
+    AppHeader,
+    AppFooter
   }
 }
 </script>

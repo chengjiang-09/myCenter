@@ -58,7 +58,7 @@ router.beforeEach(async (to, from) => {
   const id = store.state.user.userInfo.id
   if (token) {
     if (!id) {
-      await store.dispatch('user/getUserInfoToToken', token)
+      await store.dispatch('user/getUserInfoToToken')
       token = tokenCookie.getToken()
     }
   }

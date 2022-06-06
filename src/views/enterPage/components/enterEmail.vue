@@ -7,7 +7,7 @@
   <div class="EnterMobile">
     <h2>进入私密空间~~</h2>
     <ul>
-      <li><DynamicIText v-model:value="loginUser.mobile" title="请输入手机号" @blur="valiBlur" :warnText='warnText'/></li>
+      <li><DynamicIText v-model:value="loginUser.email" title="请输入您的邮箱" @blur="valiBlur" :warnText='warnText'/></li>
       <li :style="{display:`flex`,width:`100%`}">
         <DynamicIText v-model:value="loginUser.code" :width="11" title="验证码" @blur="valiCodeBlur" :warnText='codeWarnText'/>
         <DynamicButton class="valiableBT" :width="9" @click="getCode">{{CodeMessage}}</DynamicButton>
@@ -18,15 +18,15 @@
 </template>
 
 <script>
-import { mobileCodeAPI } from '@/api'
+import { emailCodeAPI } from '@/api'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { computed, reactive, ref } from 'vue'
-import { valiMobile } from './valiabel'
+import { valiEmail } from './valiabel'
 
 import DyAlert from '@/components/library/DynamicComponents/DynamicAlert/DynamicAlertHook'
 export default {
-  name: 'EnterMobile',
+  name: 'EnterEmail',
   props: {
     secondFlag: {
       type: Boolean
@@ -34,13 +34,13 @@ export default {
     vNum: {
       type: Number
     },
-    sMobile: {
+    sEmail: {
       type: [Boolean, String]
     }
   },
   setup (props, { emit }) {
     const loginUser = reactive({
-      mobile: '',
+      email: '',
       code: ''
     })
 
@@ -56,9 +56,9 @@ export default {
     let CodeMessage = null
 
     if (!props.secondFlag) {
-      if (props.sMobile) {
-        loginUser.mobile = (function () {
-          return props.sMobile
+      if (props.sEmail) {
+        loginUser.email = (function () {
+          return props.sEmail
         }())
       }
       CodeMessage = computed({
@@ -78,8 +78,8 @@ export default {
     }
 
     const valiBlur = () => {
-      if (!valiMobile(loginUser.mobile)) {
-        warnText.value = '请输入正确的手机号码！'
+      if (!valiEmail(loginUser.email)) {
+        warnText.value = '请输入正确的邮箱！'
       } else {
         warnText.value = ''
         loginFlag.value = true
@@ -96,7 +96,7 @@ export default {
     }
 
     const getCode = (e) => {
-      if (valiMobile(loginUser.mobile)) {
+      if (valiEmail(loginUser.email)) {
         if (flag.value) {
           if (props.secondFlag) {
             loginFlag.value = true
@@ -104,11 +104,12 @@ export default {
             flag.value = false
             getCodeMessage.value = 60
 
-            mobileCodeAPI().then((value) => {
-              console.log(value)
+            emailCodeAPI({
+              email: loginUser.email
+            }).then((value) => {
             })
 
-            emit('valiCodeTimer', loginUser.mobile)
+            emit('valiCodeTimer', loginUser.email)
             timer.value = setInterval(() => {
               getCodeMessage.value -= 1
               if (getCodeMessage.value === -1) {
@@ -120,7 +121,7 @@ export default {
           }
         }
       } else {
-        warnText.value = '请输入正确的手机号码！'
+        warnText.value = '请输入正确的邮箱！'
       }
     }
 
@@ -128,14 +129,13 @@ export default {
       if (loginFlag.value) {
         valiBlur()
         valiCodeBlur()
-        if (valiMobile(loginUser.mobile) && loginUser.code.length !== 0) {
+        if (valiEmail(loginUser.email) && loginUser.code.length !== 0) {
           loginFlag.value = false
           codeWarnText.value = ''
 
-          const msg = await store.dispatch('user/mobileLogin', loginUser)
-          const result = store.state.user.userInfo
+          const { msg, status } = await store.dispatch('user/emailLogin', loginUser)
 
-          if (result.status === 1) {
+          if (status === 1) {
             router.push('/center')
           } else {
             loginUser.code = ''

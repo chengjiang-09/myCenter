@@ -2,7 +2,7 @@
   <div
     class="balloonLayout"
     :class="[
-      { balloonLayoutShow: showFlag && Poetry },
+      { balloonLayoutShow: showFlag && Poetry.length !== 0 },
       { balloonLayoutClose: !showFlag },
     ]"
   >
@@ -52,7 +52,7 @@
 
 <script>
 import { COMPOMENT_SHOW_TIME } from '@/utils/keyWord.js'
-import { onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 export default {
   name: 'balloonLayout',
@@ -61,16 +61,22 @@ export default {
     const store = useStore()
     store.dispatch('center/updateAncientPoetry')
 
-    const Poetry = ref(store.state.center.ancientPoetry)
+    const Poetry = computed({
+      get () {
+        return store.state.center.ancientPoetry
+      }
+    })
 
     const showFlag = ref(false)
 
     const poetryData = ref(null)
 
     onMounted(() => {
-      setTimeout(() => {
-        showFlag.value = true
-      }, COMPOMENT_SHOW_TIME)
+      nextTick(() => {
+        setTimeout(() => {
+          showFlag.value = true
+        }, COMPOMENT_SHOW_TIME)
+      })
     })
 
     const readPoetry = (id) => {

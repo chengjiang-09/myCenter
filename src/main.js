@@ -16,7 +16,7 @@ import myUI from '@/components/library/DynamicComponents'
 import myMixin from '@/components/library/myMixin'
 import myDirective from '@/components/library/MyGlobalProperties'
 
-import './mock'
+// import './mock'
 
 const app = createApp(App)
 

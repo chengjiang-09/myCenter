@@ -1,5 +1,5 @@
 import { tokenCookie, tokenTimeOutCookie } from '@/utils/auth'
-import { passwordLoginAPI, tokenToUserInfoAPI, mobileLoginAPI } from '@/api'
+import { passwordLoginAPI, tokenToUserInfoAPI, emailLoginAPI } from '@/api'
 import vuexStoreKey from '@/utils/vuexStoreKey'
 
 const state = () => {
@@ -34,11 +34,11 @@ const mutations = {
 }
 
 const actions = {
-  async getUserInfoToToken (context, token) {
+  async getUserInfoToToken (context) {
     try {
-      const { result, msg } = await tokenToUserInfoAPI({ token })
+      const { result, msg, status } = await tokenToUserInfoAPI()
 
-      if (result.status === 0) {
+      if (status === 0) {
         context.commit('setUserInfo', {})
         tokenCookie.removeToken()
         tokenTimeOutCookie.removeTimeOutStamp()
@@ -54,19 +54,25 @@ const actions = {
   },
   async passwordLogin (context, loginUser) {
     try {
-      const { result, msg } = await passwordLoginAPI(loginUser)
+      const { result, msg, status } = await passwordLoginAPI(loginUser)
       context.commit('setUserInfo', result)
-      return msg
+      return {
+        msg,
+        status
+      }
     } catch (e) {
       Promise.reject(e)
       return '出错啦！'
     }
   },
-  async mobileLogin (context, loginUser) {
+  async emailLogin (context, loginUser) {
     try {
-      const { result, msg } = await mobileLoginAPI(loginUser)
+      const { result, msg, status } = await emailLoginAPI(loginUser)
       context.commit('setUserInfo', result)
-      return msg
+      return {
+        msg,
+        status
+      }
     } catch (e) {
       Promise.reject(e)
       return '出错啦！'

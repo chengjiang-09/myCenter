@@ -13,7 +13,7 @@
           </span>
         </div>
         <div class="alertBody">
-          <p>
+          <p :style="{ fontSize: `${contextSize}px` }">
             {{ context }}
           </p>
         </div>
@@ -54,6 +54,10 @@ export default {
     context: {
       type: String,
       default: '警告！'
+    },
+    contextSize: {
+      type: Number,
+      default: 26
     },
     callback: {
       type: Function,

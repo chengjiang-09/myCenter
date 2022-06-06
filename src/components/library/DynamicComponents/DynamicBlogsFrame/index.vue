@@ -31,7 +31,7 @@ export default {
     },
     picPlace: {
       type: String,
-      default: 'https://localhost:8000'
+      default: 'http://localhost:8001'
     }
   },
   setup () {

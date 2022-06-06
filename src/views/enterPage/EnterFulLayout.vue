@@ -14,7 +14,7 @@
         <ul>
           <li>
             <DynamicATitle
-              title="短信登录"
+              title="验证登录"
               :actionStatus="actionStatus === 'login'"
               @click="actionPageFn('login')"
             ></DynamicATitle>
@@ -30,11 +30,11 @@
       </div>
       <div class="form">
         <transition name="fada-ful" mode="out-in">
-          <EnterMobile
+          <EnterEmail
             v-if="actionStatus === 'login'"
             :vNum="vNum"
             :secondFlag="flag"
-            :sMobile="sMobile"
+            :sEmail="sEmail"
             @valiCodeTimer="valiTimer"
           />
           <EnterPassword v-else />
@@ -46,12 +46,12 @@
 
 <script>
 import { computed, ref } from 'vue'
-import EnterMobile from './components/enterMobile.vue'
+import EnterEmail from './components/enterEmail.vue'
 import EnterPassword from './components/enterPassword.vue'
 export default {
   name: 'EnterFulLayout',
   components: {
-    EnterMobile,
+    EnterEmail,
     EnterPassword
   },
   setup () {
@@ -83,9 +83,9 @@ export default {
     const flag = ref(true)
     const vNum = ref(60)
     const vTimer = ref(null)
-    const sMobile = ref(null)
+    const sEmail = ref(null)
     const valiTimer = (mobile) => {
-      sMobile.value = mobile
+      sEmail.value = mobile
       flag.value = false
       vTimer.value = setInterval(() => {
         vNum.value -= 1
@@ -105,7 +105,7 @@ export default {
       valiTimer,
       flag,
       vNum,
-      sMobile
+      sEmail
     }
   }
 }

@@ -16,35 +16,26 @@
 
 <script>
 import { ArrowLeftBold, ArrowRightBold } from '@element-plus/icons-vue'
-import { onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 export default {
   name: 'DynamicPaging',
-  emits: ['pageNum'],
+  emits: ['pageNum', 'updatePageList'],
   components: {
     ArrowLeftBold,
     ArrowRightBold
   },
   props: {
-    pageNums: {
-      type: [Number, String],
-      default: 5
+    pageListVuex: {
+      type: Array,
+      default: () => {
+        return []
+      }
     }
   },
   setup (props, { emit }) {
-    const pageList = reactive([])
-    onMounted(() => {
-      const id = ref(0)
-      const flag = ref(false)
-      for (let i = 0; i < props.pageNums; i++) {
-        id.value = i
-        flag.value = false
-        if (i === 0) {
-          flag.value = true
-        }
-        pageList.push({
-          id: id.value + 1,
-          flag: flag.value
-        })
+    const pageList = computed({
+      get () {
+        return props.pageListVuex
       }
     })
 
@@ -52,14 +43,11 @@ export default {
     const translateBase = ref(6)
     const activeID = ref(1)
 
+    emit('updatePageList', 1)
+
     const moveList = () => {
       list.value.style.transform = `translate(${translateBase.value}%,${0}%)`
-      pageList.forEach(obj => {
-        obj.flag = false
-        if (obj.id === activeID.value) {
-          obj.flag = true
-        }
-      })
+      emit('updatePageList', activeID.value)
       emit('pageNum', activeID.value)
     }
 

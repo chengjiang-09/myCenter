@@ -9,33 +9,48 @@
       :path="`/center/blogs/${obj.id}`"
     />
     <!-- :class="[{moveFrame:moveFrameFlag},{noMoveFrame:!moveFrameFlag}]" -->
-    <DynamicPaging @pageNum="pageNum" :pageNums="pageNums"/>
+    <DynamicPaging @pageNum="pageNum" @updatePageList="updatePageList" :pageListVuex="pageList"/>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 export default {
   name: 'blogsListLayout',
   setup () {
     const store = useStore()
 
-    const blogsList = ref(null)
-    const pageNums = ref(store.state.center.blogsPageNumberMax)
+    const blogsList = computed({
+      get () {
+        return store.state.center.blogsShowList
+      }
+    })
+    const pageList = computed({
+      get () {
+        return store.state.center.pageList
+      }
+    })
+
+    const updatePageList = (id) => {
+      pageList.value.forEach(obj => {
+        obj.flag = false
+        if (obj.id === id) {
+          obj.flag = true
+        }
+      })
+      store.commit('center/setPageList', pageList.value)
+    }
 
     store.dispatch('center/updateBlogs', 1)
 
     const pageNum = (pageNumber) => {
       store.dispatch('center/updateBlogs', pageNumber)
-
-      blogsList.value = store.state.center.blogs[pageNumber]
+      store.commit('center/setBlogsShowList', store.state.center.blogs[pageNumber])
     }
 
-    pageNums.value = store.state.center.blogsPageNumberMax
-
     return {
-      blogsList, pageNum, pageNums
+      blogsList, pageNum, pageList, updatePageList
     }
   }
 }

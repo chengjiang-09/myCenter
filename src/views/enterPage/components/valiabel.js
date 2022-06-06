@@ -1,5 +1,5 @@
-export const valiMobile = (Mobile) => {
-  const reStr = /^1[3-9]\d{9}$/
+export const valiEmail = (email) => {
+  const reStr = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
   const re = new RegExp(reStr)
-  return re.test(Mobile)
+  return re.test(email)
 }

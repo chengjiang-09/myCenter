@@ -1,17 +1,18 @@
 import request from '@/utils/request'
 
 // 手机验证码API
-export const mobileCode = () => {
+export const emailCode = (data) => {
   return request(
-    '/my/mobile/code',
-    'get'
+    '/my/email/code',
+    'get',
+    data
   )
 }
 
 // 验证码登录API
-export const mobileLogin = (data) => {
+export const emailLogin = (data) => {
   return request(
-    '/my/mobile/login',
+    '/my/email/login',
     'post',
     data
   )

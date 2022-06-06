@@ -52,54 +52,56 @@ export default {
     const BGChange = () => {
       switch (true) {
         case window.scrollY > 0 && window.scrollY <= 50:
-          BG.value.style.opacity = 1
-          BG.value.style.transform = 'translate(0%,-0%)'
+          BG.value.style.opacity = '1'
+          BG.value.style.transform = 'translate(0%,-3%)'
           break
         case window.scrollY > 100 && window.scrollY <= 150:
-          BG.value.style.opacity = 0.75
+          BG.value.style.opacity = '0.85'
           BG.value.style.transform = 'translate(0%,-6%)'
           break
         case window.scrollY > 200 && window.scrollY <= 250:
+          BG.value.style.opacity = '0.75'
           BG.value.style.transform = 'translate(0%,-12%)'
           break
         case window.scrollY >= 300 && window.scrollY <= 350:
-          BG.value.style.opacity = 0.75
+          BG.value.style.opacity = '0.65'
           BG.value.style.transform = 'translate(0%,-18%)'
           break
         case window.scrollY >= 350 && window.scrollY <= 400:
-          BG.value.style.opacity = 0.5
+          BG.value.style.opacity = '0.5'
           BG.value.style.transform = 'translate(0%,-24%)'
           break
         case window.scrollY >= 450 && window.scrollY <= 500:
-          BG.value.style.opacity = 0.25
+          BG.value.style.opacity = '0.25'
           break
         case window.scrollY >= 500 && window.scrollY <= 1000:
-          BG.value.style.opacity = 0
+          BG.value.style.opacity = '0'
           break
-        case window.scrollY < 3710 && window.scrollY >= 3660:
-          BG.value.style.opacity = 1
-          BG.value.style.transform = 'translate(0%,0%)'
+        case window.scrollY >= 3660:
+          BG.value.style.opacity = '1'
+          BG.value.style.transform = 'translate(0%,-3%)'
           break
         case window.scrollY < 3610 && window.scrollY >= 3560:
-          BG.value.style.opacity = 0.75
+          BG.value.style.opacity = '0.85'
           BG.value.style.transform = 'translate(0%,-6%)'
           break
         case window.scrollY < 3510 && window.scrollY >= 3460:
+          BG.value.style.opacity = '0.75'
           BG.value.style.transform = 'translate(0%,-12%)'
           break
         case window.scrollY <= 3410 && window.scrollY >= 3360:
-          BG.value.style.opacity = 0.75
+          BG.value.style.opacity = '0.65'
           BG.value.style.transform = 'translate(0%,-18%)'
           break
         case window.scrollY <= 3360 && window.scrollY >= 3310:
-          BG.value.style.opacity = 0.5
+          BG.value.style.opacity = '0.5'
           BG.value.style.transform = 'translate(0%,-24%)'
           break
         case window.scrollY <= 3260 && window.scrollY >= 3210:
-          BG.value.style.opacity = 0.25
+          BG.value.style.opacity = '0.25'
           break
         case window.scrollY <= 3210 && window.scrollY >= 2000:
-          BG.value.style.opacity = 0
+          BG.value.style.opacity = '0'
           break
       }
     }
@@ -131,7 +133,7 @@ export default {
 .center {
   user-select: none;
   background-color: #000;
-  img {
+  .BG {
     position: fixed;
     top: 0;
     left: 0;
@@ -139,7 +141,7 @@ export default {
     height: auto;
     clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
     transform: translate(0%, 0%);
-    transition: clip-path 0.5s, opacity 0.8s, transform 0.8s;
+    transition: clip-path 0.5s, transform 0.8s, opacity 0.8s;
   }
   .oneClose {
     clip-path: polygon(50% 10%, 60% 50%, 50% 90%, 40% 50%);

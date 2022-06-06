@@ -3,5 +3,6 @@ export default {
   ANCIENT_POETRY: 'ancientPoetry',
   BLOGS: 'blogs',
   BLOGS_PAGE_NUMBER_MAX: 'blogsPageNumberMax',
-  COMMENTLIST: 'commentList'
+  COMMENTLIST: 'commentList',
+  PAGELIST: 'pageList'
 }
