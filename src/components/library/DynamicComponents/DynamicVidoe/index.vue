@@ -4,7 +4,7 @@
  * @LastEditTime: 2022-03-19 11:00:31
 -->
 <template>
-  <div>
+  <div class="DynamicVidoe">
     <video
       ref="dyVideo"
       :src="src"

@@ -41,3 +41,11 @@ export const getComments = (pageNum) => {
     }
   )
 }
+
+export const sendComment = (commentConfig) => {
+  return request(
+    '/my/sendcomment',
+    'post',
+    commentConfig
+  )
+}

@@ -1,7 +1,7 @@
 <template>
   <div class="DynamicCommentBall">
     <p class="comment" @click="downNav">
-      {{ data.context }}
+      {{ father.context }}
     </p>
     <div class="downNav" :class="[{ downNavShow: donwNavFlag }]">
       <div class="send">
@@ -10,12 +10,12 @@
           class="input"
           placeholder="回复TA"
           v-model="sendMasterText"
-          @keydown.enter="sendMaster(data.id, data.author)"
+          @keydown.enter="sendMaster(father.id, father.author)"
         />
         <button
           type="button"
           class="button"
-          @click="sendMaster(data.id, data.author)"
+          @click="sendMaster(father.id, father.author)"
         >
           回复ta
         </button>
@@ -33,7 +33,7 @@
                 ><button
                   type="button"
                   class="buttonMaster"
-                  @click="sendTa(obj.id, obj.author)"
+                  @click="sendTa(obj.id, obj.author, father.id, obj.id)"
                 >
                   回复
                 </button></span
@@ -66,9 +66,7 @@
                     <button
                       type="button"
                       class="button"
-                      @click="
-                        sendTa(obj.id, grandSonObj.author, grandSonObj.id)
-                      "
+                      @click="sendTa(grandSonObj.id, grandSonObj.author, father.id, obj.id)"
                     >
                       回复
                     </button></span
@@ -97,7 +95,7 @@
 <script>
 import { computed, reactive, ref } from 'vue'
 import { tokenCookie } from '@/utils/auth.js'
-
+import { sendCommentAPI } from '@/api'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import myAlert from '@/components/library/DynamicComponents/DynamicAlert/DynamicAlertHook.js'
@@ -105,17 +103,23 @@ export default {
   name: 'DynamicCommentBall',
   props: {
     data: {
-      type: Object,
-      default: () => {
-        return {}
-      }
+      type: Number,
+      default: 1
     }
   },
   setup (props) {
+    const router = useRouter()
+    const store = useStore()
+
     const donwNavFlag = ref(true)
     const child = computed({
       get () {
-        return props.data.children
+        return store.state.center.commentShowList[props.data].children
+      }
+    })
+    const father = computed({
+      get () {
+        return store.state.center.commentShowList[props.data]
       }
     })
     const grandSon = ref([])
@@ -126,9 +130,6 @@ export default {
     const sendCommentObj = {}
     const nowDate = ref(null)
 
-    const router = useRouter()
-    const store = useStore()
-
     const userInfo = store.state.user.userInfo
 
     const downNav = () => {
@@ -138,18 +139,22 @@ export default {
     const goSend = async () => {
       if (sendText.value.trim() !== '') {
         nowDate.value = new Date()
-        sendCommentObj.id = parseInt(
-          `${userInfo.id}${nowDate.value.getFullYear()}${
-            nowDate.value.getMonth() + 1
-          }${nowDate.value.getDate()}${nowDate.value.getHours()}${nowDate.value.getMinutes()}${nowDate.value.getSeconds()}`
-        )
+
         sendCommentObj.context = sendText.value
         sendCommentObj.date = (function () {
           return `${nowDate.value.getFullYear()}-${
-            nowDate.value.getMonth() + 1
-          }-${nowDate.value.getDate()}`
+              (nowDate.value.getMonth() + 1) > 9 ? nowDate.value.getMonth() + 1 : `0${nowDate.value.getMonth() + 1}`
+            }-${nowDate.value.getDate() > 9 ? nowDate.value.getDate() : `0${nowDate.value.getDate()}`}`
         })()
-        await store.dispatch('center/updateCommentList', sendCommentObj)
+        // await store.dispatch('center/updateCommentList', sendCommentObj)
+
+        const pageNum = store.state.center.commentPageIndex
+
+        await sendCommentAPI(sendCommentObj)
+        store.commit('center/clearIndexCommentList', pageNum)
+        await store.dispatch('center/updateCommentList', pageNum)
+        store.commit('center/setCommentShowList', store.state.center.commentList[pageNum])
+
         initCommentList()
         sendText.value = ''
       } else {
@@ -165,21 +170,24 @@ export default {
         sendCommentObj.masterName = sendTargetName
         sendCommentObj.masterID = id
         sendCommentObj.author = userInfo.name
+        sendCommentObj.topID = id
 
         if (sendMasterText.value.trim() !== '') {
           nowDate.value = new Date()
-          sendCommentObj.id = parseInt(
-            `${userInfo.id}${nowDate.value.getFullYear()}${
-              nowDate.value.getMonth() + 1
-            }${nowDate.value.getDate()}${nowDate.value.getHours()}${nowDate.value.getMinutes()}${nowDate.value.getSeconds()}`
-          )
           sendCommentObj.context = sendMasterText.value
           sendCommentObj.date = (function () {
             return `${nowDate.value.getFullYear()}-${
-              nowDate.value.getMonth() + 1
-            }-${nowDate.value.getDate()}`
+              (nowDate.value.getMonth() + 1) > 9 ? nowDate.value.getMonth() + 1 : `0${nowDate.value.getMonth() + 1}`
+            }-${nowDate.value.getDate() > 9 ? nowDate.value.getDate() : `0${nowDate.value.getDate()}`}`
           })()
-          await store.dispatch('center/updateCommentList', sendCommentObj)
+
+          const pageNum = store.state.center.commentPageIndex
+
+          await sendCommentAPI(sendCommentObj)
+          store.commit('center/clearIndexCommentList', pageNum)
+          await store.dispatch('center/updateCommentList', pageNum)
+          store.commit('center/setCommentShowList', store.state.center.commentList[pageNum])
+
           initCommentList()
           sendMasterText.value = ''
         } else {
@@ -189,7 +197,7 @@ export default {
           })
         }
 
-        goSend()
+        // goSend()
       } else {
         myAlert({
           title: '提示',
@@ -203,11 +211,11 @@ export default {
       }
     }
 
-    const sendTa = (id, sendTargetName, otherID) => {
+    const sendTa = (id, sendTargetName, topID, showID) => {
       if (tokenCookie.getToken()) {
         sendTarget.value = sendTargetName
         child.value.forEach((obj) => {
-          if (obj.id === id) {
+          if (obj.id === showID) {
             obj.sendBtnFlag = true
           } else {
             obj.sendBtnFlag = false
@@ -215,7 +223,8 @@ export default {
         })
 
         sendCommentObj.masterName = sendTargetName
-        sendCommentObj.masterID = otherID || id
+        sendCommentObj.masterID = id
+        sendCommentObj.topID = topID
         sendCommentObj.author = userInfo.name
       } else {
         myAlert({
@@ -274,7 +283,8 @@ export default {
       sendText,
       goSend,
       sendMaster,
-      sendMasterText
+      sendMasterText,
+      father
     }
   }
 }
@@ -283,7 +293,7 @@ export default {
 <style scoped lang="less">
 .DynamicCommentBall {
   position: relative;
-  padding: 3vh 1vw;
+  padding: 3vh 1vw 10vh 1vw;
   border-left: 1px dashed #fff;
   border-right: 1px dashed #fff;
   margin: 0 1vw 3vh 1vw;

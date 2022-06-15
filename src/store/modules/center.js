@@ -1,6 +1,5 @@
 import ancientPoetry from '@/mock/ancientPoetry.json'
 import blogsObj from '@/mock/blogs.json'
-import commentList from '@/mock/comment.json'
 
 import { getPoetryAPI, getBlogAPI, getCommentPageNumberMaxAPI, getCommentsAPI } from '@/api'
 
@@ -36,7 +35,8 @@ const state = () => {
     commentShowList: [],
     pageList: JSON.parse(localStorage.getItem(vuexStoreKey.PAGELIST)) || [],
     commentPageList: JSON.parse(localStorage.getItem(vuexStoreKey.COMMENT_PAGELIST)) || [],
-    commentPageNumberMax: JSON.parse(localStorage.getItem(vuexStoreKey.COMMENT_PAGE_NUMBER_MAX)) || 1
+    commentPageNumberMax: JSON.parse(localStorage.getItem(vuexStoreKey.COMMENT_PAGE_NUMBER_MAX)) || 1,
+    commentPageIndex: 1
   }
 }
 
@@ -63,6 +63,10 @@ const mutations = {
     state.commentList[dataObj.pageNum] = dataObj.data
     localStorage.setItem(vuexStoreKey.COMMENTLIST, JSON.stringify(state.commentList))
   },
+  clearIndexCommentList (state, pageNum) {
+    state.commentList[pageNum] = null
+    localStorage.setItem(vuexStoreKey.COMMENTLIST, JSON.stringify(state.commentList))
+  },
   clearCommentList (state) {
     state.commentList = {}
     localStorage.setItem(vuexStoreKey.COMMENTLIST, JSON.stringify(state.commentList))
@@ -78,6 +82,9 @@ const mutations = {
   setCommentPageNumberMax (state, num) {
     state.commentPageNumberMax = num
     localStorage.setItem(vuexStoreKey.COMMENT_PAGE_NUMBER_MAX, JSON.stringify(state.commentPageNumberMax))
+  },
+  setCommentPageIndex (state, num) {
+    state.commentPageIndex = num
   }
 }
 
@@ -221,14 +228,7 @@ const actions = {
         // commnetList = "数据"
         // throw new Error('评论列表暂无接口')
       } catch (e) {
-        console.log(e.message, ',将使用默认静态数据')
-
-        const comments = commentList.commentList
-
-        context.commit('setCommentList', {
-          data: initCommentList(comments),
-          pageNum: 1
-        })
+        console.log(e.message)
       }
     }
   }

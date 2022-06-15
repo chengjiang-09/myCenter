@@ -57,6 +57,7 @@ export default {
             await store.dispatch('center/updateCommentPageNumberMax')
             await store.dispatch('center/updateCommentList')
             store.commit('center/setCommentShowList', store.state.center.commentList[1])
+            comment.value = ''
             myAlert({
               title: '提示',
               context: msg
