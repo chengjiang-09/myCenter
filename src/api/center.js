@@ -16,3 +16,28 @@ export const getBlog = (pageNum) => {
     }
   )
 }
+
+export const sendFootprint = (commentConfig) => {
+  return request(
+    '/my/footprint',
+    'post',
+    commentConfig
+  )
+}
+
+export const getCommentPageNumberMax = () => {
+  return request(
+    '/my/commentsMaxNum',
+    'get'
+  )
+}
+
+export const getComments = (pageNum) => {
+  return request(
+    '/my/comments',
+    'get',
+    {
+      pageNum
+    }
+  )
+}

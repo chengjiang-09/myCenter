@@ -18,16 +18,67 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+import { tokenCookie } from '@/utils/auth'
+import { sendFootprintAPI } from '@/api'
+import { getTime } from './normalizeTime.js'
 import myAlert from '@/components/library/DynamicComponents/DynamicAlert/DynamicAlertHook.js'
 export default {
   name: 'DynamicCommentSend',
   setup () {
     const comment = ref('')
+    const router = useRouter()
 
-    const aClick = () => {
-      if (comment.value.trim() === '') {
-        myAlert({ title: '警告', context: '输入信息为空！' })
+    const store = useStore()
+
+    const commentConfig = reactive({
+      masterName: '',
+      masterID: 0,
+      author: null,
+      date: '',
+      context: ''
+    })
+
+    const aClick = async () => {
+      if (tokenCookie.getToken()) {
+        if (comment.value.trim() === '') {
+          myAlert({ title: '警告', context: '输入信息为空！' })
+        } else {
+          commentConfig.author = store.state.user.userInfo.name
+          commentConfig.context = comment.value
+          commentConfig.date = getTime()
+
+          const { status, msg } = await sendFootprintAPI(commentConfig)
+
+          if (status === 1) {
+            store.commit('center/clearCommentList')
+            await store.dispatch('center/updateCommentPageNumberMax')
+            await store.dispatch('center/updateCommentList')
+            store.commit('center/setCommentShowList', store.state.center.commentList[1])
+            myAlert({
+              title: '提示',
+              context: msg
+            })
+          } else if (status === 2) {
+            myAlert({
+              title: '提示',
+              context: msg,
+              contextSize: 20
+            })
+          }
+        }
+      } else {
+        myAlert({
+          title: '提示',
+          context: '请登录后再发布您的评论，是否前往登录页面？',
+          callback: (flag) => {
+            if (flag) {
+              router.push('/')
+            }
+          }
+        })
       }
     }
 

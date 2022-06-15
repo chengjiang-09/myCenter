@@ -4,5 +4,7 @@ export default {
   BLOGS: 'blogs',
   BLOGS_PAGE_NUMBER_MAX: 'blogsPageNumberMax',
   COMMENTLIST: 'commentList',
-  PAGELIST: 'pageList'
+  PAGELIST: 'pageList',
+  COMMENT_PAGELIST: 'commentPageList',
+  COMMENT_PAGE_NUMBER_MAX: 'commentPageNumberMax'
 }

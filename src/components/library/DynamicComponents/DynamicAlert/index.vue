@@ -145,7 +145,7 @@ export default {
         text-overflow: ellipsis;
         // white-space: nowrap;
         display: -webkit-box;
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 10;
         -webkit-box-orient: vertical;
         word-break: break-all;
       }

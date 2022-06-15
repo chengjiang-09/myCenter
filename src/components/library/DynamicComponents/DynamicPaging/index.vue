@@ -16,7 +16,7 @@
 
 <script>
 import { ArrowLeftBold, ArrowRightBold } from '@element-plus/icons-vue'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 export default {
   name: 'DynamicPaging',
   emits: ['pageNum', 'updatePageList'],
@@ -30,18 +30,28 @@ export default {
       default: () => {
         return []
       }
+    },
+    updateFlag: {
+      type: Boolean,
+      default: true
     }
   },
   setup (props, { emit }) {
+    const list = ref(null)
+    const translateBase = ref(6)
+    const activeID = ref(1)
+
     const pageList = computed({
-      get () {
+      get: () => {
         return props.pageListVuex
       }
     })
 
-    const list = ref(null)
-    const translateBase = ref(6)
-    const activeID = ref(1)
+    watch(() => props.updateFlag, () => {
+      translateBase.value = 6
+      activeID.value = 1
+      list.value.style.transform = `translate(${translateBase.value}%,${0}%)`
+    })
 
     emit('updatePageList', 1)
 
@@ -52,7 +62,7 @@ export default {
     }
 
     const goLeft = () => {
-      if (translateBase.value !== 6 - (props.pageNums - 1) * 3) {
+      if (translateBase.value !== 6 - (props.pageListVuex.length - 1) * 3) {
         activeID.value += 1
         translateBase.value -= 3
         moveList()
